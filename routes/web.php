@@ -21,5 +21,6 @@ Route::get('/', function () {
 
 Route::get('/chat', [ChatController::class,'chat'])->name('user.chat');
 
+Route::post('/start-conv',[ChatController::class, 'startConv'])->name('user.conv');
 
 Route::get('/admin', [AdminController::class,'admin'])->name('admin.chat');
