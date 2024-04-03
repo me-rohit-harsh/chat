@@ -1,0 +1,241 @@
+#chatBox {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 450px;
+    height: 70%;
+    /* min-height: 75%; */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    z-index: 9999;
+    /* margin: 5rem; */
+    margin-bottom: 100px;
+    margin-right: 20px;
+    overflow: hidden;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+    /* overflow-y: scroll; */
+}
+
+#chatButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.card {
+    height: 100%;
+    width: 100%;
+}
+
+#chatButton:hover {
+    transform: scale(1.1);
+}
+
+.chat-content {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.chat-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: none;
+    border-top: 1px solid #ccc;
+    outline: none;
+}
+
+.chat-input:focus {
+    border-color: #007bff;
+}
+
+.chat-header {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.chat-header .btn {
+    padding: 3px 8px;
+    margin-top: -3px;
+}
+
+.fa-comments {
+    font-size: 20px;
+}
+
+textarea {
+    resize: none;
+    max-height: 100px;
+    min-height: 100px;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+/* Animation for opening and closing chat box */
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToRight {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Animation for maximizing and minimizing chat box */
+.maximized {
+    animation-name: expandChatBox;
+}
+
+@keyframes expandChatBox {
+    0% {
+        width: 450px;
+        height: 530px;
+    }
+
+    100% {
+        width: 90%;
+        height: 80%;
+    }
+}
+
+.chat-content {
+    position: relative;
+    overflow-y: auto;
+}
+
+.input-group {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 0;
+    /* Remove the margin to avoid extra space */
+}
+
+/* Style the input field */
+.form-control,
+.btn-primary {
+    border-radius: 20px;
+    /* Rounded corners */
+}
+
+/* Style the send message button */
+.sendbutton {
+    /* border-radius-: 50%; */
+    border-bottom-right-radius: 100px;
+    border-top-right-radius: 100px;
+    /* Circular shape */
+    /* padding: 10px; */
+    /* Increase padding for larger button */
+    /* margin-left: 10px; */
+    /* Add margin to separate from input field */
+}
+
+/* Style the chat messages */
+.message {
+    margin-bottom: 10px;
+    /* Add some space between messages */
+}
+
+.message-content {
+    padding: 10px;
+    /* Add padding to the message content */
+    border-radius: 10px;
+    /* Round the corners of the message bubble */
+}
+
+
+
+/* Style the input field and send message button */
+#userMessageInput {
+    border-radius: 20px;
+    /* Round the corners of the input field */
+    padding: 10px;
+    /* Add padding to the input field */
+    margin-right: 10px;
+    /* Add some space to the right of the input field */
+}
+
+/* Style the chat messages */
+#chatMessages {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin-bottom: 10px;
+    /* padding: 10px; */
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+.outgoing {
+    background-color: #DCF8C6;
+    align-self: flex-end;
+}
+
+.incoming {
+    background-color: #EAEAEA;
+    align-self: flex-start;
+}
+
+.incoming:last-child,
+.outgoing:last-child {
+    margin-bottom: 4rem;
+}
+
+/* scroll bar css starts  */
+/* Style the scrollbar for the chat content */
+.chat-content::-webkit-scrollbar {
+    width: 10px;
+    /* Set the width of the scrollbar */
+}
+
+.chat-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Set the background color of the scrollbar track */
+}
+
+.chat-content::-webkit-scrollbar-thumb {
+    background: #dad7d7;
+    /* Set the color of the scrollbar thumb */
+    border-radius: 5px;
+    /* Add some border radius to the scrollbar thumb */
+}
+
+.chat-content::-webkit-scrollbar-thumb:hover {
+    background: #cfcdcd;
+    /* Change the color of the scrollbar thumb on hover */
+}

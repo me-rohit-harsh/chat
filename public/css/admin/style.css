@@ -1,0 +1,201 @@
+body{
+    background-color:#809805;
+}
+/* Styling the scrollbar */
+.live-chats {
+    padding-bottom: 25%;
+    min-height: 100vh;
+    overflow-y: auto;
+    /* Change to auto to show scrollbar only when needed */
+    max-height: 100vh;
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: #e8e6e6 hsl(0, 0%, 99%);
+    cursor: pointer;
+    /* Firefox */
+}
+
+.live-chats::-webkit-scrollbar {
+    width: 8px;
+}
+
+.live-chats::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.live-chats::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.live-chats::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+
+
+
+.live-chats .list-group-item {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.live-chats .list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-3px);
+}
+
+
+/*  Admin right side css  starts*/
+/* Chat message style */
+.message {
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.message-content {
+    background-color: #DCF8C6;
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+    max-width: 60%;
+}
+
+.message-meta {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.message-time {
+    float: right;
+    font-size: 0.7rem;
+    /* Adjust time font size */
+}
+
+.message-author {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Style for incoming message */
+.message.incoming {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.message.incoming .fa-user {
+    font-size: 24px;
+    color: #4CAF50;
+    /* Green color for incoming message user icon */
+    margin-right: 10px;
+}
+
+.message.incoming .message-content {
+    background-color: #DCF8C6;
+    /* Light green background color for incoming message */
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.message.incoming .message-meta {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.message-incoming .message-time {
+    float: right;
+    font-size: 0.7rem;
+}
+
+/* Style for outgoing message */
+.message.outgoing {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.message.outgoing .message-content {
+    background-color: #007bff;
+    /* Blue background color for outgoing message */
+    color: white;
+    /* White text color for outgoing message */
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 60%;
+    /* Adjust the max-width as needed */
+    text-align: left;
+}
+
+.message.outgoing .message-time {
+    font-size: 0.7rem;
+    color: #ffffff;
+    /* Color for message time */
+}
+
+.msg-box {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.msg-box-body {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chat-messages {
+    padding-bottom: 60px;
+    /* Adjust for the height of the input group */
+}
+
+.msg-box-body {
+
+    position: relative;
+    background: linear-gradient(to top left, #ffffff, #27cced);
+    /* Adjust colors as needed */
+
+
+}
+
+
+.chat-adminSide.input-group {
+    /* position: fixed; */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: #fff;
+    /* Adjust background color as needed */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    /* Add a shadow effect */
+}
+
+/* Custom scrollbar */
+.msg-box-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.msg-box-body::-webkit-scrollbar-track {
+    background: #FFFFFF;
+}
+
+/* Handle */
+.msg-box-body::-webkit-scrollbar-thumb {
+    background: #E8E6E6;
+}
+
+/* Handle on hover */
+.msg-box-body::-webkit-scrollbar-thumb:hover {
+    background: #E8E6E6;
+}
+
+.container-fluid {
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+/*  Admin right side css ends  */
