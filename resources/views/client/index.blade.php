@@ -44,6 +44,12 @@
                         <p>Please select the department you wish to talk to.
                         </p>
                         <div class="form-group row">
+                            <label for="name" class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="name" placeholder="Enter full name" required name="name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="department" class="col-sm-4 col-form-label">Department</label>
                             <div class="col-12">
                                 <select name="department" id="department" class="form-control">

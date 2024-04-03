@@ -16,6 +16,7 @@ class ChatController extends Controller
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
+            'name'=>'required|String',
             'department' => 'required|string',
             'category' => 'required|string',
             'message' => 'required|string',
@@ -23,6 +24,7 @@ class ChatController extends Controller
 
         // Create a new chat instance
         $chat = new Chat();
+        $chat->name = $validatedData['name'];
         $chat->department = $validatedData['department'];
         $chat->category = $validatedData['category'];
         $chat->message = $validatedData['message'];
