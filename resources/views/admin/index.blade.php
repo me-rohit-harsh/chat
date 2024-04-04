@@ -194,24 +194,24 @@
                                     </div>
                                 </div>
                                 <!-- Admin's Message -->
+                              @if ($uniqueChat->admin_reply != null)
+                                    
                                 <div class="message outgoing">
                                     <div class="message-content">
-                                        Sample message 1 Sample message 1 this is the mew m,sgaaaaaa
-                                        Sample message 1
-                                        Sample message 1
-                                        Sample message 1
-
+                                        {{$uniqueChat->admin_reply}}
                                         <div class="message-meta">
-                                            <span class="message-time">10:00 AM</span>
+                                            <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 <!-- Add more messages as needed -->
                             </div>
                             <!-- Chat Input -->
                             @if($uniqueChat->status!="closed")
                             <form id="adminReplyForm">
                                 @csrf
+                                <input type="hidden" name="id" id="id" value="{{$uniqueChat->id}}">
                                 <div class="input-group mb-2 pr-5" style="position: fixed; bottom: 0;">
                                     <textarea name="adminMsg" id="adminMSG" class="form-control" rows="1"></textarea>
                                     <div class="input-group-append">
@@ -223,22 +223,26 @@
                             <script>
                                 document.getElementById("adminReplyForm").addEventListener("submit", function(event) {
                                     event.preventDefault(); // Prevent default form submission
-                                    var formData = new FormData(); // Create new FormData object
                                     var adminMsg = document.getElementById("adminMSG").value; // Get adminMsg value
-                                    formData.append('adminMsg', adminMsg); // Append adminMsg to formData
-                                    console.log(adminMsg);
+                                    var id = document.getElementById("id").value; // Get id value
+                        
                                     // Make AJAX request to send admin reply
                                     fetch("{{ route('admin.reply') }}", {
                                         method: "POST",
-                                        body: formData,
                                         headers: {
+                                            'Content-Type': 'application/json',
                                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        }
+                                        },
+                                        body: JSON.stringify({
+                                            adminMsg: adminMsg,
+                                            id: id
+                                        })
                                     })
                                     .then(response => {
                                         if (response.ok) {
                                             // Do something if successful
                                             console.log("Admin reply sent successfully.");
+                                            window.location.reload();
                                         } else {
                                             // Do something if request fails
                                             console.error("Failed to send admin reply.");
