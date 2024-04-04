@@ -65,17 +65,18 @@ return [
         [
             'id' => env('PUSHER_APP_ID'),
             'name' => env('APP_NAME'),
-            'host' => env('PUSHER_APP_HOST'),
             'key' => env('PUSHER_APP_KEY'),
             'secret' => env('PUSHER_APP_SECRET'),
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
-            'enable_client_messages' => false,
+            'enable_client_messages' => true,
             'enable_statistics' => true,
-            'allowed_origins' => [
-                // env('LARAVEL_WEBSOCKETS_DOMAIN'),
-            ],
         ],
+    ],
+
+    'routes' => [
+        'api' => env('LARAVEL_WEBSOCKETS_PATH', 'websockets'),
+        'dashboard' => env('LARAVEL_WEBSOCKETS_DASHBOARD_PATH', 'websockets/dashboard'),
     ],
 
     /*
