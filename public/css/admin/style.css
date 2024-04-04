@@ -1,6 +1,3 @@
-body{
-    background-color:#809805;
-}
 /* Styling the scrollbar */
 .live-chats {
     padding-bottom: 25%;
@@ -197,5 +194,17 @@ body{
     max-height: 100vh;
     overflow: hidden;
 }
-
+a{
+    text-decoration: none;
+    color: #000;
+}
+#chat-adminSide .input-group>.form-control,
+#chat-adminSide .input-group>.form-floating,
+#chat-adminSide .input-group>.form-select{
+    flex: 0.6 0.5 auto;
+}
+textarea{
+    max-height: 150px !important;
+    min-height: 30px !important;
+}
 /*  Admin right side css ends  */

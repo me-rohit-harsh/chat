@@ -19,7 +19,11 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/chat', [ChatController::class,'chat'])->name('user.chat');
+Route::get('/chat', [ChatController::class, 'chat'])->name('user.chat');
 
+Route::post('/start-conv', [ChatController::class, 'startConv'])->name('user.conv');
 
-Route::get('/admin', [AdminController::class,'admin'])->name('admin.chat');
+Route::get('/admin', [AdminController::class, 'getChats'])->name('admin.chat');
+Route::post('/admin', [AdminController::class, 'postChats'])->name('admin.chat.post');
+Route::get('/admin/chat/{chat_id}', [AdminController::class, 'showChat'])->name('admin.chat.show');
+Route::post('/admin/reply', [AdminController::class, 'sendAdminReply'])->name('admin.reply');

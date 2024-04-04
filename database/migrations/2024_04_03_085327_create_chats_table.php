@@ -15,7 +15,9 @@ class CreateChatsTable extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('department');
+            $table->string('category');
             $table->text('message');
             $table->text('admin_reply')->nullable();
             $table->string('status')->default('open');
