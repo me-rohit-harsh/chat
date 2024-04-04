@@ -26,222 +26,90 @@
                         </div>
                         <div class="card-header bg-info text-white">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search users..." id="searchInput">
+                                <input type="text" class="form-control" placeholder="Search by User/Status"
+                                    id="searchInput">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterBtn"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-filter"></i> Filter
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="filterBtn">
-                                    <li><a class="dropdown-item" href="#" data-status="all">All</a></li>
-                                    <li><a class="dropdown-item  text-warning" href="#" data-status="Open">Open</a></li>
-                                    <li><a class="dropdown-item  text-primary" href="#" data-status="In process">In
-                                            process</a></li>
-                                    <li><a class="dropdown-item text-danger" href="#" data-status="Closed">Closed</a>
-                                    </li>
-                                    <!-- Add more status options as needed -->
-                                </ul>
+                                <form id="statusForm" method="POST" action="{{ route('admin.chat.post') }}">
+                                    @csrf
+                                    <ul id="statusDropdown" class="dropdown-menu" aria-labelledby="filterBtn">
+                                        <li><a type="submit" class="dropdown-item"
+                                                href="{{route('admin.chat')}}">All</a></li>
+                                        <li><button type="submit" class="dropdown-item text-success" name="status"
+                                                value="open">Open</button></li>
+                                        <li><button type="submit" class="dropdown-item text-primary" name="status"
+                                                value="in process">In
+                                                process</button></li>
+                                        <li><button type="submit" class="dropdown-item text-danger" name="status"
+                                                value="closed">Closed</button></li>
+                                        <!-- Add more status options as needed -->
+                                    </ul>
+                                </form>
                             </div>
                         </div>
                         <ul class="list-group list-group-flush live-chats " id="chatList">
+
+
                             <!-- Chat Item 1 -->
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-success text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                John Doe
-                                                <span class="badge bg-primary">In process</span>
-                                                <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 1</small>
+                            <ul class="list-group">
+                                @foreach($chats as $chat)
+                                <li class="list-group-item">
+                                    <a href="{{ route('admin.chat.show', ['chat_id' => $chat->id]) }}">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                @php
+                                                $departmentColor = '';
+                                                switch ($chat->department) {
+                                                case 'sales':
+                                                $departmentColor = 'bg-success';
+                                                break;
+                                                case 'support':
+                                                $departmentColor = 'bg-primary';
+                                                break;
+                                                case 'technical':
+                                                $departmentColor = 'bg-danger';
+                                                break;
+                                                case 'billing':
+                                                $departmentColor = 'bg-warning';
+                                                break;
+                                                }
+                                                @endphp
+                                                @php
+                                                $statusColor = '';
+                                                switch ($chat->status) {
+                                                case 'open':
+                                                $statusColor = 'bg-success';
+                                                break;
+                                                case 'in process':
+                                                $statusColor = 'bg-primary';
+                                                break;
+                                                case 'closed':
+                                                $statusColor = 'bg-danger';
+                                                break;
+                                                }
+                                                @endphp
+                                                <i
+                                                    class="fa-solid fa-user text-dark rounded-circle me-3 p-2 {{ $departmentColor }} text-white"></i>
+                                                <div>
+                                                    <h6 class="mb-0">
+                                                        {{ $chat->name }}
+
+                                                        <span class="badge {{$statusColor}}">{{ $chat->status }}</span>
+
+                                                    </h6>
+                                                    <small>{{ $chat->category }}</small>
+                                                </div>
+                                            </div>
+                                            <small>{{ $chat->created_at->format('h:i A') }}</small>
+                                            <!-- Assuming created_at field in your Chat model -->
+                                            <!-- Timestamp -->
                                         </div>
-                                    </div>
-                                    <small>10:30 AM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-success text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                John Doe
-                                                <span class="badge bg-primary">In process</span>
-                                                <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 1</small>
-                                        </div>
-                                    </div>
-                                    <small>10:30 AM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-success text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                John Doe
-                                                <span class="badge bg-primary">In process</span>
-                                                <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 1</small>
-                                        </div>
-                                    </div>
-                                    <small>10:30 AM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-success text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                John Doe
-                                                <span class="badge bg-primary">In process</span>
-                                                <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 1</small>
-                                        </div>
-                                    </div>
-                                    <small>10:30 AM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-primary text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                Jane Smith
-                                                <span class="badge bg-primary">In process</span>
-                                                <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 2</small>
-                                        </div>
-                                    </div>
-                                    <small>11:45 AM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-danger text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                Alice Johnson
-                                                <span class="badge bg-warning">Open</span> <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 3</small>
-                                        </div>
-                                    </div>
-                                    <small>12:15 PM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-warning text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                Michael Brown
-                                                <span class="badge bg-danger">Closed</span> <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 4</small>
-                                        </div>
-                                    </div>
-                                    <small>1:30 PM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-info text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                David Wilson
-                                                <span class="badge bg-danger">Closed</span> <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 5</small>
-                                        </div>
-                                    </div>
-                                    <small>2:45 PM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-primary text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                Jane Smith
-                                                <span class="badge bg-primary">In process</span>
-                                                <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 2</small>
-                                        </div>
-                                    </div>
-                                    <small>11:45 AM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-danger text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                Alice Johnson
-                                                <span class="badge bg-warning">Open</span> <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 3</small>
-                                        </div>
-                                    </div>
-                                    <small>12:15 PM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-warning text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                Michael Brown
-                                                <span class="badge bg-danger">Closed</span> <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 4</small>
-                                        </div>
-                                    </div>
-                                    <small>1:30 PM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i
-                                            class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-info text-white"></i>
-                                        <div>
-                                            <h6 class="mb-0">
-                                                David Wilson
-                                                <span class="badge bg-danger">Closed</span> <!-- Badge for status -->
-                                            </h6>
-                                            <small>Subject of Message 5</small>
-                                        </div>
-                                    </div>
-                                    <small>2:45 PM</small> <!-- Timestamp -->
-                                </div>
-                            </li>
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
 
                             <!-- Repeat similar structure for other chat items -->
 
@@ -252,27 +120,79 @@
 
                 <!-- Right Panel for Selected Chat -->
                 <div class="col-md-8" id="chat-adminSide">
+                    @if (session('alert'))
+                    <div class="alert alert-danger">
+                        {{ session('alert') }}
+                    </div>
+                    @endif
+                    @if (request()->is('admin/*') && isset($uniqueChat) && !empty($uniqueChat))
+                    @php
+                    $departmentColor = '';
+                    switch ($uniqueChat->department) {
+                    case 'sales':
+                    $departmentColor = 'bg-success';
+                    break;
+                    case 'support':
+                    $departmentColor = 'bg-primary';
+                    break;
+                    case 'technical':
+                    $departmentColor = 'bg-danger';
+                    break;
+                    case 'billing':
+                    $departmentColor = 'bg-warning';
+                    break;
+                    }
+                    @endphp
+                    @php
+                    $statusColor = '';
+                    switch ($uniqueChat->status) {
+                    case 'open':
+                    $statusColor = 'bg-success';
+                    break;
+                    case 'in process':
+                    $statusColor = 'bg-primary';
+                    break;
+                    case 'closed':
+                    $statusColor = 'bg-danger';
+                    break;
+                    }
+                    @endphp
                     <div class="card msg-box">
-                        <div class="card-header bg-secondary text-white" style="z-index: 10;">
+                        <div class="card-header .bg-light " style="z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between">
+
                                 <div class="d-flex align-items-center">
                                     <i
-                                        class="fa-solid fa-user text-dark rounded-circle me-3 p-2 bg-info text-white"></i>
+                                        class="fa-solid fa-user text-dark rounded-circle me-3 p-2 {{$departmentColor}} text-white"></i>
                                     <div>
                                         <h6 class="mb-0">
-                                            David Wilson
-                                            <span class="badge bg-danger">Closed</span> <!-- Badge for status -->
+                                            {{$uniqueChat->name}}
+                                            <span class="badge {{$statusColor}}">{{$uniqueChat->status}}</span>
+                                            <!-- Badge for status -->
                                         </h6>
-                                        <small>example@gmail.com</small>
+                                        <small>{{$uniqueChat->name}}@gmail.com</small>
                                     </div>
                                 </div>
-                                <a type="button" class="btn-close" aria-label="Close"></a>
+                                <a type="button" class="btn-close" aria-label="Close"
+                                    href="{{route('admin.chat')}}"></a>
                             </div>
 
                         </div>
                         <div class="card-body msg-box-body overlay" style="overflow-y: auto;" id="chatContainer">
                             <!-- Chat Messages -->
                             <div class="chat-messages">
+
+
+                                <!-- User's Message -->
+                                <div class="message incoming">
+                                    <i class="fa-solid fa-user text-dark"></i>
+                                    <div class="message-content">
+                                        {{$uniqueChat->message}}
+                                        <div class="message-meta">
+                                            <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Admin's Message -->
                                 <div class="message outgoing">
                                     <div class="message-content">
@@ -286,77 +206,63 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- User's Message -->
-                                <div class="message incoming">
-                                    <i class="fa-solid fa-user text-dark"></i>
-                                    <div class="message-content">
-                                        Sample message content
-                                        <div class="message-meta">
-                                            <span class="message-time">10:30 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- User's Message -->
-                                <div class="message incoming">
-                                    <i class="fa-solid fa-user text-dark"></i>
-                                    <div class="message-content">
-                                        Sample message content
-                                        <div class="message-meta">
-                                            <span class="message-time">10:30 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- User's Message -->
-
-                                <div class="message outgoing">
-                                    <div class="message-content">
-                                        Sample message 1
-                                        <div class="message-meta">
-                                            <span class="message-time">10:00 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message outgoing">
-                                    <div class="message-content">
-                                        Sample message 1
-                                        <div class="message-meta">
-                                            <span class="message-time">10:00 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message outgoing">
-                                    <div class="message-content">
-                                        Sample message 1
-                                        <div class="message-meta">
-                                            <span class="message-time">10:00 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message incoming">
-                                    <i class="fa-solid fa-user text-dark"></i>
-                                    <div class="message-content">
-                                        Sample message contentSample message contentSample message contentSample message
-                                        contentSample message contentSample message contentSample message content
-                                        <div class="message-meta">
-                                            <span class="message-time">10:30 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- Add more messages as needed -->
                             </div>
                             <!-- Chat Input -->
-                            <div class="input-group mt-3" style="position: sticky; bottom: 0;">
-                                <textarea name="adminMsg" id="adminMSG" class="form-control" rows="2"></textarea>
-                                <!-- <textarea class="form-control" placeholder="Type your message..."></textarea> -->
-                                <button class="btn btn-success">Send message <i
-                                        class="fa-solid fa-paper-plane fa-2x"></i></button>
-                            </div>
-
+                            @if($uniqueChat->status!="closed")
+                            <form id="adminReplyForm">
+                                @csrf
+                                <div class="input-group mb-2 pr-5" style="position: fixed; bottom: 0;">
+                                    <textarea name="adminMsg" id="adminMSG" class="form-control" rows="1"></textarea>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="submit"> <i
+                                                class="fa-solid fa-paper-plane fa-2x"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                            <script>
+                                document.getElementById("adminReplyForm").addEventListener("submit", function(event) {
+                                    event.preventDefault(); // Prevent default form submission
+                                    var formData = new FormData(); // Create new FormData object
+                                    var adminMsg = document.getElementById("adminMSG").value; // Get adminMsg value
+                                    formData.append('adminMsg', adminMsg); // Append adminMsg to formData
+                                    console.log(adminMsg);
+                                    // Make AJAX request to send admin reply
+                                    fetch("{{ route('admin.reply') }}", {
+                                        method: "POST",
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            // Do something if successful
+                                            console.log("Admin reply sent successfully.");
+                                        } else {
+                                            // Do something if request fails
+                                            console.error("Failed to send admin reply.");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Error:", error);
+                                    });
+                                });
+                            </script>
+                            @endif
                         </div>
-
                     </div>
-
+                    @else
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                        <div>
+                            <img src="{{ asset('asset/support.jpg') }}" alt="Support Team Image"
+                                style="max-width: 100%; max-height: 70vh; width: auto; height: auto; display: block; margin: 0 auto;">
+                            <p style="text-align: center; font-size: 18px; margin-top: 20px;">Your support is needed!
+                                Don't keep your
+                                customers waiting. Engage them now!</p>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
 
@@ -364,7 +270,7 @@
         </div>
     </div>
 
-   <script src="{{ asset('js/admin/script.js') }}"></script>
+    <script src="{{ asset('js/admin/script.js') }}"></script>
     <!-- Bootstrap JS (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
