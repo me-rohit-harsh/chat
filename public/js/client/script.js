@@ -54,33 +54,33 @@ function sendMessage() {
     // Append the user message to the chat box
     document.getElementById('chatMessages').innerHTML += userMessage;
 
-    setTimeout(function () {
-        document.getElementById('chatMessages').innerHTML += userMessage;
-        scrollChatToBottom();
+    // setTimeout(function () {
+    //     document.getElementById('chatMessages').innerHTML += userMessage;
+    //     scrollChatToBottom();
 
-    }, 2500)
+    // }, 2500)
     scrollChatToBottom();
     // Simulate admin reply (replace with actual backend logic)
     var adminReply = `
         <div class="message incoming">
-            <div class="message-content">Thank you for your message. We will get back to you soon.
+            <div class="message-content">Thank you for your message. your are in queue 1.
             </div>
         </div>
-    `;
-
-    // Append the admin reply to the chat box after a delay (simulating response time)
-    setTimeout(function () {
-        document.getElementById('chatMessages').innerHTML += adminReply;
-        scrollChatToBottom();
-    }, 1000); // Adjust the delay as needed (in milliseconds)
+        `;
+        // Append the admin reply to the chat box after a delay (simulating response time)
     setTimeout(function () {
         document.getElementById('chatMessages').innerHTML += adminReply;
         scrollChatToBottom();
     }, 2000); // Adjust the delay as needed (in milliseconds)
-    setTimeout(function () {
-        document.getElementById('chatMessages').innerHTML += adminReply;
-        scrollChatToBottom();
-    }, 3000); // Adjust the delay as needed (in milliseconds)
+
+    // setTimeout(function () {
+    //     document.getElementById('chatMessages').innerHTML += adminReply;
+    //     scrollChatToBottom();
+    // }, 1000); // Adjust the delay as needed (in milliseconds)
+    // setTimeout(function () {
+    //     document.getElementById('chatMessages').innerHTML += adminReply;
+    //     scrollChatToBottom();
+    // }, 3000); // Adjust the delay as needed (in milliseconds)
 
 }
 
