@@ -35,7 +35,7 @@
     <div id="chatBox">
         <div class="card">
             <div class="card-header chat-header">
-                Chat Box
+                Oxyclouds Live Chat
                 <button id="maximizeChat" class="btn btn-sm btn-secondary float-right"><i
                         class="fas fa-compress-alt"></i></button>
             </div>
@@ -87,12 +87,14 @@
                 </div>
 
             </div>
-            <div class="input-group p-3" id="userMessageInput" style="display: none;">
-                <input type="text" class="form-control" placeholder="Type your message...">
-                <button class="btn btn-primary sendbutton" type="button" id="sendMessageButton">Send
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
+            <form action="">
+                <div class="input-group p-3" id="userMessageInput" style="display: none;">
+                    <input type="text" class="form-control" placeholder="Type your message...">
+                    <button class="btn btn-primary sendbutton" type="button" id="sendMessageButton">Send
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
             <!-- <div class="card-footer">
                 <input type="text" class="chat-input form-control" placeholder="Type your message...">
             </div> -->

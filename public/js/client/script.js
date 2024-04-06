@@ -73,14 +73,7 @@ function sendMessage() {
         scrollChatToBottom();
     }, 2000); // Adjust the delay as needed (in milliseconds)
 
-    // setTimeout(function () {
-    //     document.getElementById('chatMessages').innerHTML += adminReply;
-    //     scrollChatToBottom();
-    // }, 1000); // Adjust the delay as needed (in milliseconds)
-    // setTimeout(function () {
-    //     document.getElementById('chatMessages').innerHTML += adminReply;
-    //     scrollChatToBottom();
-    // }, 3000); // Adjust the delay as needed (in milliseconds)
+ 
 
 }
 
