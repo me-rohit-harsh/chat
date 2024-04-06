@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="{{ asset('css/client/style.css') }}" rel="stylesheet">
+    <script src="{{asset('js/app.js')}}"></script>
 </head>
 
 <body>
@@ -25,6 +26,7 @@
                     Whether you're facing technical issues, have product inquiries, or need guidance, we're here to
                     provide
                     prompt and friendly assistance. Connect with us now and experience hassle-free support!</p>
+                <a href="{{route('user.chat.list')}}"> <i class="fas fa-solid fa-list"></i> Show All Chats</a>
             </div>
         </div>
     </div>
@@ -43,12 +45,13 @@
                         @csrf
                         <p>Please select the department you wish to talk to.
                         </p>
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label for="name" class="col-sm-4 col-form-label">Name</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" placeholder="Enter full name" required name="name">
+                                <input type="text" class="form-control" id="name" placeholder="Enter full name" required
+                                    name="name">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group row">
                             <label for="department" class="col-sm-4 col-form-label">Department</label>
                             <div class="col-12">
@@ -111,8 +114,9 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
+                    sendMessage();
                     // Handle successful response
-                    alert('Conversation started successfully');
+                    // alert('Conversation started successfully');
                 },
                 error: function(xhr, status, error) {
                     // Handle error response
@@ -123,7 +127,12 @@
         });
     });
     </script>
-
+    <script>
+        Echo.channel('MessageUpdate')
+.listen('ChatEvent', (event) => {
+console.log(event.message);
+});
+    </script>
     <script src="{{ asset('js/client/script.js') }}"></script>
 </body>
 

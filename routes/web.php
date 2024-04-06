@@ -15,15 +15,24 @@ use App\Http\Controllers\ChatController;
 |
 */
 
+
+Route::get('/chat', [ChatController::class, 'chat'])->middleware(['auth'])->name('user.chat');
+Route::get('/chatlist', [ChatController::class, 'chatList'])->middleware(['auth'])->name('user.chat.list');
+
+Route::post('/start-conv', [ChatController::class, 'startConv'])->middleware(['auth'])->name('user.conv');
+
+Route::get('/admin', [AdminController::class, 'getChats'])->middleware(['auth'])->name('admin.chat');
+Route::post('/admin', [AdminController::class, 'postChats'])->middleware(['auth'])->name('admin.chat.post');
+Route::get('/admin/chat/{chat_id}', [AdminController::class, 'showChat'])->middleware(['auth'])->name('admin.chat.show');
+Route::post('/admin/reply', [AdminController::class, 'sendAdminReply'])->middleware(['auth'])->name('admin.reply');
+
+
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
-Route::get('/chat', [ChatController::class, 'chat'])->name('user.chat');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-Route::post('/start-conv', [ChatController::class, 'startConv'])->name('user.conv');
-
-Route::get('/admin', [AdminController::class, 'getChats'])->name('admin.chat');
-Route::post('/admin', [AdminController::class, 'postChats'])->name('admin.chat.post');
-Route::get('/admin/chat/{chat_id}', [AdminController::class, 'showChat'])->name('admin.chat.show');
-Route::post('/admin/reply', [AdminController::class, 'sendAdminReply'])->name('admin.reply');
+require __DIR__.'/auth.php';

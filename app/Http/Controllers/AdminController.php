@@ -4,8 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use App\Events\ChatEvent;
 class AdminController extends Controller
+
+
+
+
+
+
+
 {
 
 
@@ -14,28 +22,35 @@ class AdminController extends Controller
         $status = $request->status;
 
         if ($status == '') {
-            $chats = Chat::all();
+            $chats = Chat::orderBy('created_at', 'desc')->get();
         } else {
-            $chats = Chat::where('status', $status)->get();
+            $chats = Chat::where('status', $status)
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
         return view('admin.index', compact('chats'));
     }
+
     public function postChats(Request $request)
     {
         $status = $request->status;
 
         if ($status == 'all') {
-            $chats = Chat::all();
+            $chats = Chat::orderBy('created_at', 'desc')->get();
         } else {
-            $chats = Chat::where('status', $status)->get();
+            $chats = Chat::where('status', $status)
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
 
         return view('admin.index', compact('chats'));
     }
 
+
     public function showChat($chat_id)
     {
-        $chats = Chat::all();
+        $chats =
+        Chat::orderBy('created_at', 'desc')->get();
         $uniqueChat = Chat::find($chat_id);
         // dd($chat);
         if (!$uniqueChat) {
@@ -46,19 +61,18 @@ class AdminController extends Controller
     }
     public function sendAdminReply(Request $request)
     {
-        // echo("here is am");
-        // dd($request->all());
         // Validate the incoming request data
         $request->validate([
-            'adminMsg' => 'required|string|max:255',
+            'adminMsg' => 'required|string',
         ]);
-
-        $chatId = $request->input('id'); 
+        $chatId = $request->input('chatId');
         $chat = Chat::findOrFail($chatId);
-
+        $chat->sender_id =Auth::id();
         // Save the admin reply to the chat
         $chat->admin_reply = $request->input('adminMsg');
         $chat->save();
+        // Dispatch the ChatEvent
+        event(new ChatEvent("Admin Msg: " . $chat->admin_reply));
 
         // Respond with a success message
         return response()->json(['message' => 'Admin reply sent successfully'], 200);
