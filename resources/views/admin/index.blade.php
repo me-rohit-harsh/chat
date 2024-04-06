@@ -11,6 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ asset('css/admin/style.css') }}" rel="stylesheet">
+    <script src="{{asset('js/app.js')}}"></script>
 </head>
 
 <body>
@@ -55,7 +56,7 @@
                             <!-- Chat Item 1 -->
                             <ul class="list-group">
                                 @foreach($chats as $chat)
-                                <li class="list-group-item">
+                                <li class="list-group-item" id="chat{{$chat->id}}">
                                     <a href="{{ route('admin.chat.show', ['chat_id' => $chat->id]) }}">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-flex align-items-center">
@@ -180,7 +181,7 @@
                         </div>
                         <div class="card-body msg-box-body overlay" style="overflow-y: auto;" id="chatContainer">
                             <!-- Chat Messages -->
-                            <div class="chat-messages">
+                            <div class="chat-messages" id="chatMessageId">
 
 
                                 <!-- User's Message -->
@@ -193,9 +194,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- User's Message -->
                                 <!-- Admin's Message -->
-                              @if ($uniqueChat->admin_reply != null)
-                                    
+                                @if ($uniqueChat->admin_reply != null)
+
                                 <div class="message outgoing">
                                     <div class="message-content">
                                         {{$uniqueChat->admin_reply}}
@@ -211,7 +213,7 @@
                             @if($uniqueChat->status!="closed")
                             <form id="adminReplyForm">
                                 @csrf
-                                <input type="hidden" name="id" id="id" value="{{$uniqueChat->id}}">
+                                <input type="hidden" name="chatId" id="chatId" value="{{$uniqueChat->id}}">
                                 <div class="input-group mb-2 pr-5" style="position: fixed; bottom: 0;">
                                     <textarea name="adminMsg" id="adminMSG" class="form-control" rows="1"></textarea>
                                     <div class="input-group-append">
@@ -223,8 +225,9 @@
                             <script>
                                 document.getElementById("adminReplyForm").addEventListener("submit", function(event) {
                                     event.preventDefault(); // Prevent default form submission
-                                    var adminMsg = document.getElementById("adminMSG").value; // Get adminMsg value
-                                    var id = document.getElementById("id").value; // Get id value
+                                   var adminMsgTextarea = document.getElementById('adminMSG'); // Get adminMsg value
+                                    var chatId = document.getElementById("chatId").value; // Get id value
+                                   var adminMsg= adminMsgTextarea.value;
                         
                                     // Make AJAX request to send admin reply
                                     fetch("{{ route('admin.reply') }}", {
@@ -235,17 +238,39 @@
                                         },
                                         body: JSON.stringify({
                                             adminMsg: adminMsg,
-                                            id: id
+                                            chatId: chatId,
+                                         
                                         })
                                     })
                                     .then(response => {
-                                        if (response.ok) {
-                                            // Do something if successful
-                                            console.log("Admin reply sent successfully.");
-                                            window.location.reload();
-                                        } else {
-                                            // Do something if request fails
-                                            console.error("Failed to send admin reply.");
+                                       if (response.ok) {
+                                    // Do something if successful
+                                    // console.log("Admin reply sent successfully.");
+                                    
+                                    // Get the chat container
+                                    var chatContainer = document.getElementById('chatMessageId');
+                                    
+            
+                                    // Clear the textarea
+                                    adminMsgTextarea.value = '';
+                                    
+                                    // Create the HTML structure for the admin message
+                                    let chatMsg = `
+                                    <div class="message outgoing">
+                                        <div class="message-content">
+                                            ${adminMsg}
+                                            <div class="message-meta">
+                                                <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                    
+                                    // Append the admin message to the chat container
+                                    chatContainer.insertAdjacentHTML('beforeend', chatMsg);
+                                    scrollChatToBottom();
+                                    } else {
+                                           alert("Failed to send admin reply.");
+                                            // console.error("Failed to send admin reply.");
                                         }
                                     })
                                     .catch(error => {
@@ -273,7 +298,12 @@
             </div>
         </div>
     </div>
-
+    <script>
+        Echo.channel('MessageUpdate')
+.listen('ChatEvent', (event) => {
+console.log(event.message);
+});
+    </script>
     <script src="{{ asset('js/admin/script.js') }}"></script>
     <!-- Bootstrap JS (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

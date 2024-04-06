@@ -85,11 +85,11 @@ function sendMessage() {
 }
 
 // Add event listener to the form submit button to send the message
-document.querySelector('form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission
-    sendMessage(); // Call the sendMessage function
-    scrollChatToBottom();
-});
+// document.querySelector('form').addEventListener('submit', function (event) {
+//     event.preventDefault(); // Prevent form submission
+//     sendMessage(); // Call the sendMessage function
+//     scrollChatToBottom();
+// });
 // Function to scroll the chat container to the bottom
 function scrollChatToBottom() {
     var userMgCon = document.getElementById("userMgCon");
