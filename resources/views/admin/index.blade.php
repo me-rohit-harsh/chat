@@ -301,7 +301,7 @@
     <script>
         Echo.channel('MessageUpdate')
 .listen('ChatEvent', (event) => {
-console.log(event.message);
+console.log(event.chat);
 });
     </script>
     <script src="{{ asset('js/admin/script.js') }}"></script>
