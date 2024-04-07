@@ -34,7 +34,7 @@
     <script>
         Echo.private('MessageUpdate')
     .listen('ChatEvent', (event) => {
-    console.log(event.message);
+    console.log("User Msg: ".event);
     });
     </script>
 </x-app-layout>

@@ -35,7 +35,7 @@
     <div id="chatBox">
         <div class="card">
             <div class="card-header chat-header">
-                Chat Box
+                Oxyclouds Live Chat
                 <button id="maximizeChat" class="btn btn-sm btn-secondary float-right"><i
                         class="fas fa-compress-alt"></i></button>
             </div>
@@ -87,15 +87,15 @@
                 </div>
 
             </div>
-            <div class="input-group p-3" id="userMessageInput" style="display: none;">
-                <input type="text" class="form-control" placeholder="Type your message...">
-                <button class="btn btn-primary sendbutton" type="button" id="sendMessageButton">Send
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-            <!-- <div class="card-footer">
-                <input type="text" class="chat-input form-control" placeholder="Type your message...">
-            </div> -->
+            <form action="">
+                @csrf
+                <div class="input-group p-3" id="userMessageInput" style="display: none;">
+                    <input type="text" name="chatMsg" class="form-control" placeholder="Type your message...">
+                    <button class="btn btn-primary sendbutton" type="button" id="sendMessageButton">Send
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -114,7 +114,14 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-                    sendMessage();
+                    var hiddenInput = $('<input>').attr({
+                    type: 'hidden',
+                    name: 'chatId',
+                    value: response.chatId 
+                    });
+                    
+                    // Append the hidden input to your form or any other desired location
+                    $('form').append(hiddenInput);
                     // Handle successful response
                     // alert('Conversation started successfully');
                 },
@@ -128,10 +135,23 @@
     });
     </script>
     <script>
-        Echo.channel('MessageUpdate')
-.listen('ChatEvent', (event) => {
-console.log(event.message);
-});
+        Echo.channel('MessageUpdate').listen('ChatEvent', (data) => {
+            if ({{ auth()->id() }} === data.chat.user_id) {
+                // Set the message content
+                let incomingMsg = `<div class="message incoming">
+                    <div class="message-content">${data.chat.admin_reply}</div>
+                </div>`;
+    
+                // Append the message element to the chatMessages element
+                document.getElementById('chatMessages').innerHTML += incomingMsg;
+                scrollChatToBottom();
+            }
+        });
+        Echo.channel('UserChat').listen('UserChatEvent', (data) => {
+            if ({{ auth()->id() }} === data.chat.user_id) {
+                sendMessage(data.chat.message);
+            }
+        });
     </script>
     <script src="{{ asset('js/client/script.js') }}"></script>
 </body>

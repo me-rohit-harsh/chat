@@ -72,7 +72,7 @@ class AdminController extends Controller
         $chat->admin_reply = $request->input('adminMsg');
         $chat->save();
         // Dispatch the ChatEvent
-        event(new ChatEvent("Admin Msg: " . $chat->admin_reply));
+        event(new ChatEvent($chat));
 
         // Respond with a success message
         return response()->json(['message' => 'Admin reply sent successfully'], 200);

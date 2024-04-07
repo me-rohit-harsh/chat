@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Chat;
 use Illuminate\Support\Facades\Auth;
-use App\Events\ChatEvent;
+use App\Events\UserChatEvent;
 
 class ChatController extends Controller
 {
@@ -36,10 +36,10 @@ class ChatController extends Controller
 
         // Save the chat instance
         $chat->save();
-        event(new ChatEvent("User Msg: " . $chat->message));
+        event(new UserChatEvent($chat));
 
         // Optionally, you can return a response indicating success or failure
-        return response()->json(['message' => 'Conversation started successfully'], 200);
+        return response()->json(['message' => 'Conversation started successfully','chatId' => $chat->id], 200);
     }
     public function chatList()
     {
@@ -47,5 +47,23 @@ class ChatController extends Controller
         $userId = Auth::user()->id;
         $chats = Chat::where('user_id', $userId)->get();
         return view('client.chatlist', compact('chats'));
+    }
+
+    public function updateChatMessage(Request $request, $id){
+        // Validate the incoming request data
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        // Find the chat message by its ID
+        $chat = Chat::findOrFail($id);
+
+        // Update the chat message content
+        $chat->message = $request->input('message');
+        $chat->save();
+
+        // Return a response indicating success
+        return response()->json(['message' => 'Chat message updated successfully'], 200);
+   
     }
 }

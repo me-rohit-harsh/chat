@@ -12,41 +12,44 @@
 </head>
 
 <body>
-   <div class="container">
-    <h2>Your Chats</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Chat Id</th>
-                    <th>Subject</th>
-                    <th>Message</th>
-                    <th>Open Time</th>
-                    <th>Status</th>
-                    <th>Admin Reply</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($chats as $chat)
-                <tr>
-                    <td>{{$chat->id}}</td>
-                    <td>{{$chat->category}}</td>
-                    <td>{{$chat->message}}</td>
-                    <td>{{ $chat->created_at->format('M d, Y H:i:s') }}</td>
-                    <td>{{ $chat->status }}</td>
-                    <td>{{ $chat->admin_reply ?? 'N/A' }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="container">
+        <h2>Your Chats</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Chat Id</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Open Time</th>
+                        <th>Status</th>
+                        <th>Admin Reply</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($chats as $chat)
+                    <tr>
+                        <td>{{$chat->id}}</td>
+                        <td>{{$chat->category}}</td>
+                        <td>{{$chat->message}}</td>
+                        <td>{{ $chat->created_at->format('M d, Y H:i:s') }}</td>
+                        <td>{{ $chat->status }}</td>
+                        <td>{{ $chat->admin_reply ?? 'N/A' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
-    <script src="{{ asset('js/client/script.js') }}"></script>
     <script>
-        Echo.channel('chat').listen('newChat', (data) => {
-            console.log(data);
+       
+        Echo.channel('MessageUpdate').listen('ChatEvent', (data) => {
+        if ({{ auth()->id() }} === data.chat.user_id) {
+        console.log(data);
+        }  
         });
+    </script>
+    <script>
     </script>
 </body>
 

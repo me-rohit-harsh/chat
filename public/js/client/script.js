@@ -26,16 +26,17 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('maximizeChat').addEventListener('click', function () {
         var isMaximized = chatBox.classList.toggle('maximized');
         maximizeButton.innerHTML = isMaximized ? '<i class="fas fa-compress-alt"></i>' : '<i class="fas fa-expand-alt"></i>';
+   scrollChatToBottom();
     });
 });
 
 
 // Function to send a message from the user
-function sendMessage() {
+function sendMessage(message) {
     // Get user input from the form fields
     // var department = document.getElementById('department').value;
     // var subject = document.getElementById('subject').value;
-    var message = document.getElementById('message').value;
+    // var message = document.getElementById('message').value;
     var convForm = document.getElementById('convForm');
     var userInput = document.getElementById('userMessageInput');
     convForm.style.display = 'none';
@@ -71,16 +72,9 @@ function sendMessage() {
     setTimeout(function () {
         document.getElementById('chatMessages').innerHTML += adminReply;
         scrollChatToBottom();
-    }, 2000); // Adjust the delay as needed (in milliseconds)
+    }, 5000); // Adjust the delay as needed (in milliseconds)
 
-    // setTimeout(function () {
-    //     document.getElementById('chatMessages').innerHTML += adminReply;
-    //     scrollChatToBottom();
-    // }, 1000); // Adjust the delay as needed (in milliseconds)
-    // setTimeout(function () {
-    //     document.getElementById('chatMessages').innerHTML += adminReply;
-    //     scrollChatToBottom();
-    // }, 3000); // Adjust the delay as needed (in milliseconds)
+ 
 
 }
 
