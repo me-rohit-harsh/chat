@@ -30,6 +30,8 @@
             </div>
         </div>
     </div>
+    <div class="message-container" id="message-container" style="">
+    </div>
     <button id="chatButton" class="btn btn-primary rounded-circle"><i class="fa-solid fa-comments fas"></i></button>
 
     <div id="chatBox">
@@ -40,53 +42,52 @@
                         class="fas fa-compress-alt"></i></button>
             </div>
             <div class="card-body chat-content" id="userMgCon">
+               
                 <div id="chatMessages" class="container">
-                    <form id="convForm">
-                        @csrf
-                        <p>Please select the department you wish to talk to.
-                        </p>
-                        {{-- <div class="form-group row">
-                            <label for="name" class="col-sm-4 col-form-label">Name</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" placeholder="Enter full name" required
-                                    name="name">
-                            </div>
-                        </div> --}}
-                        <div class="form-group row">
-                            <label for="department" class="col-sm-4 col-form-label">Department</label>
-                            <div class="col-12">
-                                <select name="department" id="department" class="form-control">
-                                    <option value="sales">Sales</option>
-                                    <option value="support">Support</option>
-                                    <option value="technical">Technical</option>
-                                    <option value="billing">Billing</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="subject" class="col-sm-4 col-form-label">Subject</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="subject" placeholder="Enter Subject"
-                                    required name="category">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="message" class="col-sm-4 col-form-label">Message</label>
-                            <div class="col-sm-12">
-                                <textarea name="message" class="form-control" id="message" rows="4"
-                                    placeholder="Enter your message" required></textarea>
-
-                            </div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom: 1rem;">
-                            <div class="col-sm-12">
-                                <button class="btn btn-primary btn-block" type="submit">Start Conversation</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
 
             </div>
+            <form id="convForm" class="container">
+                @csrf
+                <p>Please select the department you wish to talk to.
+                </p>
+                {{-- <div class="form-group row">
+                    <label for="name" class="col-sm-4 col-form-label">Name</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="name" placeholder="Enter full name" required name="name">
+                    </div>
+                </div> --}}
+                <div class="form-group row">
+                    <label for="department" class="col-sm-4 col-form-label">Department</label>
+                    <div class="col-12">
+                        <select name="department" id="department" class="form-control">
+                            <option value="sales">Sales</option>
+                            <option value="support">Support</option>
+                            <option value="technical">Technical</option>
+                            <option value="billing">Billing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="subject" class="col-sm-4 col-form-label">Subject</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="subject" placeholder="Enter Subject" required name="category">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="message" class="col-sm-4 col-form-label">Message</label>
+                    <div class="col-sm-12">
+                        <textarea name="message" class="form-control" id="message" rows="4" placeholder="Enter your message"
+                            required></textarea>
+            
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom: 1rem;">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary btn-block" type="submit">Start Conversation</button>
+                    </div>
+                </div>
+            </form>
             <form action="" id="chatForm">
                 @csrf
                 <div class="input-group p-3" id="userMessageInput" style="display: none;">
@@ -125,7 +126,7 @@
                     // Previously i was utilize the Event to do so as done below
                     sendMessage(message);
                     // Append the hidden input to your form or any other desired location
-                    $('form').append(hiddenInput);
+                    $('#chatForm').append(hiddenInput);
                     // Handle successful response
                     // alert('Conversation started successfully');
                 },
@@ -174,16 +175,34 @@
     <script>
         // To display admin MSG 
         Echo.channel('MessageUpdate').listen('ChatEvent', (data) => {
-            if ({{ auth()->id() }} === data.chat.user_id) {
-                // Set the message content
-                let incomingMsg = `<div class="message incoming">
-                    <div class="message-content">${data.chat.admin_reply}</div>
-                </div>`;
-                // Append the message element to the chatMessages element
-                document.getElementById('chatMessages').innerHTML += incomingMsg;
-                scrollChatToBottom();
+        if ({{ auth()->id() }} === data.chat.user_id) {
+        let chatBoxStyle = window.getComputedStyle(document.getElementById('chatBox')).display;
+        
+        if (chatBoxStyle === 'block') {
+        // Set the message content
+        let incomingMsg = `<div class="message incoming">
+            <div class="message-content">${data.chat.admin_reply}</div>
+        </div>`;
+        // Append the message element to the chatMessages element
+        document.getElementById('chatMessages').innerHTML += incomingMsg;
+        scrollChatToBottom();
+        } else {
+            let incomingMsg = `<div class="message incoming">
+                <div class="message-content">${data.chat.admin_reply}</div>
+            </div>`;
+            document.getElementById('chatMessages').innerHTML += incomingMsg;
+             // If chatBox is not visible, show the message content // Unread Messages will be displayed like this
+             let messageDiv = document.createElement('div');
+             messageDiv.classList.add('OfflineMessage', 'OfflineIncoming', 'mb-2', 'shadow');
+             messageDiv.innerHTML = `
+             <div class="message-content">${data.chat.admin_reply}</div>
+             `;
+
+             // Append the message div to the message container
+             document.getElementById('message-container').appendChild(messageDiv);
+                 }
             }
-        });
+            });
         // To display the user msg in the next tab 
         // Echo.channel('UserChat').listen('UserChatEvent', (data) => {
         //     if ({{ auth()->id() }} === data.chat.user_id) {

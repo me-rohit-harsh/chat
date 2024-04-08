@@ -50,9 +50,9 @@
 }
 
 .chat-content {
-    height: calc(100% - 60px);
+    /* height: calc(100% - 60px); */
     overflow-y: auto;
-    padding: 10px;
+    padding: 0px;
 }
 
 .chat-input {
@@ -200,10 +200,35 @@ textarea {
     border-radius: 10px;
     max-width: 70%;
 }
+.OfflineMessage {
+    border-radius: 10px;
+    max-width: 100%;
+}
 
+.OfflineIncoming {
+    max-width: 300px;
+    background-color: #EAEAEA;
+    align-self: flex-start;
+    overflow: inherit;
+    word-wrap: break-word;
+    white-space: normal;
+}
+#message-container{
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 9;
+    display: block;
+}
+#convForm{
+    overflow: auto;
+}
 .outgoing {
     background-color: #DCF8C6;
     align-self: flex-end;
+}
+.outgoing:first-child{
+    margin-top: 10px;
 }
 
 .incoming {
@@ -218,24 +243,24 @@ textarea {
 
 /* scroll bar css starts  */
 /* Style the scrollbar for the chat content */
-.chat-content::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 10px;
     /* Set the width of the scrollbar */
 }
 
-.chat-content::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: #f1f1f1;
     /* Set the background color of the scrollbar track */
 }
 
-.chat-content::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: #dad7d7;
     /* Set the color of the scrollbar thumb */
     border-radius: 5px;
     /* Add some border radius to the scrollbar thumb */
 }
 
-.chat-content::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: #cfcdcd;
     /* Change the color of the scrollbar thumb on hover */
 }
