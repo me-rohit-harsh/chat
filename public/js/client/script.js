@@ -78,6 +78,21 @@ function sendMessage(message) {
 
 }
 
+// Conversation chat update 
+function addConversation(message){
+  // Construct the message
+  var userMessage = `
+        <div class="message outgoing">
+            <div class="message-content">
+               ${message}           
+            </div>
+        </div>
+    `;
+     $('#chat_msg').val('');
+     // Append the user message to the chat box
+     document.getElementById('chatMessages').innerHTML += userMessage;
+      scrollChatToBottom();
+}
 // Add event listener to the form submit button to send the message
 // document.querySelector('form').addEventListener('submit', function (event) {
 //     event.preventDefault(); // Prevent form submission

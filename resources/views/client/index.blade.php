@@ -87,10 +87,11 @@
                 </div>
 
             </div>
-            <form action="">
+            <form action="" id="chatForm">
                 @csrf
                 <div class="input-group p-3" id="userMessageInput" style="display: none;">
-                    <input type="text" name="chatMsg" class="form-control" placeholder="Type your message...">
+                    <input type="text" name="chatMsg" id="chat_msg" class="form-control"
+                        placeholder="Type your message...">
                     <button class="btn btn-primary sendbutton" type="button" id="sendMessageButton">Send
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -104,10 +105,10 @@
         $('#convForm').submit(function(event) {
             // Prevent default form submission
             event.preventDefault();
-
+var message = $('#message').val();
             // Get form data
             var formData = $(this).serialize();
-
+// console.log(formData);
             // Send AJAX request
             $.ajax({
                 url: '/start-conv', // Assuming this is the route to your startConv function
@@ -117,9 +118,12 @@
                     var hiddenInput = $('<input>').attr({
                     type: 'hidden',
                     name: 'chatId',
-                    value: response.chatId 
-                    });
-                    
+                    value: response.chatId,
+                    id:'chat_id'
+                    });  
+                    // Diplaying the msg in the text tab as soon as the conversation started 
+                    // Previously i was utilize the Event to do so as done below
+                    sendMessage(message);
                     // Append the hidden input to your form or any other desired location
                     $('form').append(hiddenInput);
                     // Handle successful response
@@ -131,27 +135,63 @@
                     alert('Error: ' + errorMessage); // Display the error message to the user
                 }
             });
+        });    
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        // Click event handler for the send button
+        $('#sendMessageButton').click(function(event) {
+            // Prevent default form submission
+            event.preventDefault();
+            // Get form data
+            var message = $('#chat_msg').val();
+            var requestData = {
+            'message': message, 
+            };
+            // Send AJAX request
+            $.ajax({
+                url: '{{ url("update-chat-message") }}/' + $('#chat_id').val(), 
+                type: 'POST',
+                data: requestData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token
+                },
+                success: function() {
+                    // Handle success response
+                    addConversation(message);
+                    // console.log("Chat updated success");
+                    // If needed, append the updated message or perform other actions
+                },
+                error: function(xhr) {
+                    // Handle error response
+                    console.error('Failed to update chat message:', xhr.responseText);
+                }
+            });
         });
     });
     </script>
     <script>
+        // To display admin MSG 
         Echo.channel('MessageUpdate').listen('ChatEvent', (data) => {
             if ({{ auth()->id() }} === data.chat.user_id) {
                 // Set the message content
                 let incomingMsg = `<div class="message incoming">
                     <div class="message-content">${data.chat.admin_reply}</div>
                 </div>`;
-    
                 // Append the message element to the chatMessages element
                 document.getElementById('chatMessages').innerHTML += incomingMsg;
                 scrollChatToBottom();
             }
         });
-        Echo.channel('UserChat').listen('UserChatEvent', (data) => {
-            if ({{ auth()->id() }} === data.chat.user_id) {
-                sendMessage(data.chat.message);
-            }
-        });
+        // To display the user msg in the next tab 
+        // Echo.channel('UserChat').listen('UserChatEvent', (data) => {
+        //     if ({{ auth()->id() }} === data.chat.user_id) {
+        //         sendMessage(data.chat.message);
+        //     }
+        // });
+        // To display the next msg of user 
+
     </script>
     <script src="{{ asset('js/client/script.js') }}"></script>
 </body>

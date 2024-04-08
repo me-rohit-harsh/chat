@@ -31,3 +31,24 @@ function scrollChatToBottom() {
 window.onload = function () {
     scrollChatToBottom();
 };
+function userMessageUpdate(message, updatedAt) {
+    var html = `
+        <div class="message incoming">
+            <i class="fa-solid fa-user text-dark"></i>
+            <div class="message-content">
+                ${message}
+                <div class="message-meta">
+                    <span class="message-time"> ${updatedAt} </span>
+                </div>
+            </div>
+        </div>`;
+
+    // Append the HTML to the chatContainer
+   var chatContainer = document.getElementById("chatMessageId");
+   chatContainer.insertAdjacentHTML('beforeend', html);
+
+
+    // Scroll the chat to bottom
+    scrollChatToBottom();
+}
+

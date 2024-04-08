@@ -238,8 +238,7 @@
                                         },
                                         body: JSON.stringify({
                                             adminMsg: adminMsg,
-                                            chatId: chatId,
-                                         
+                                            chatId: chatId, 
                                         })
                                     })
                                     .then(response => {
@@ -299,10 +298,40 @@
         </div>
     </div>
     <script>
-        Echo.channel('MessageUpdate')
-.listen('ChatEvent', (event) => {
-console.log(event.chat);
-});
+        // To listen the event  
+        // Echo.channel('MessageUpdate')
+        // .listen('ChatEvent', (event) => {
+        // console.log(event.chat);
+        // });
+        // To display the user msg in the tab
+
+        @if(isset($uniqueChat))
+        Echo.channel('UserChat').listen('UserChatEvent', (data) => {
+        if({{$uniqueChat->id}} == data.chat.id){
+          
+  
+            console.log(data);
+            var html = `
+            <div class="message incoming">
+                <i class="fa-solid fa-user text-dark"></i>
+                <div class="message-content">
+                    ${data.chat.message}
+                    <div class="message-meta">
+                     <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
+                    </div>
+                </div>
+            </div>`;
+            
+            // Append the HTML to the chatContainer
+            var chatContainer = document.getElementById("chatMessageId");
+            chatContainer.insertAdjacentHTML('beforeend', html);
+            
+            // Scroll the chat to bottom
+            scrollChatToBottom();
+        // userMessageUpdate(data.chat.message, data.chat.updated_at);
+        }
+        });
+        @endif
     </script>
     <script src="{{ asset('js/admin/script.js') }}"></script>
     <!-- Bootstrap JS (optional) -->
