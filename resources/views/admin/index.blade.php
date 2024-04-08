@@ -100,7 +100,9 @@
                                                         <span class="badge {{$statusColor}}">{{ $chat->status }}</span>
 
                                                     </h6>
-                                                    <small>{{ $chat->category }}</small>
+                                                   <small>
+                                                    <?php echo htmlspecialchars(substr($chat->category, 0, 35)); ?>
+                                                </small>
                                                 </div>
                                             </div>
                                             <small>{{ $chat->created_at->format('h:i A') }}</small>
