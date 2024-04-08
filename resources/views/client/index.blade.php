@@ -174,7 +174,7 @@
     </script>
     <script>
         // To display admin MSG 
-        Echo.channel('MessageUpdate').listen('ChatEvent', (data) => {
+        Echo.private('MessageUpdate').listen('ChatEvent', (data) => {
         if ({{ auth()->id() }} === data.chat.user_id) {
         let chatBoxStyle = window.getComputedStyle(document.getElementById('chatBox')).display;
         
@@ -204,7 +204,7 @@
             }
             });
         // To display the user msg in the next tab 
-        // Echo.channel('UserChat').listen('UserChatEvent', (data) => {
+        // Echo.private('UserChat').listen('UserChatEvent', (data) => {
         //     if ({{ auth()->id() }} === data.chat.user_id) {
         //         sendMessage(data.chat.message);
         //     }

@@ -301,14 +301,14 @@
     </div>
     <script>
         // To listen the event  
-        // Echo.channel('MessageUpdate')
+        // Echo.private('MessageUpdate')
         // .listen('ChatEvent', (event) => {
         // console.log(event.chat);
         // });
         // To display the user msg in the tab
 
         @if(isset($uniqueChat))
-        Echo.channel('UserChat').listen('UserChatEvent', (data) => {
+        Echo.private('UserChat').listen('UserChatEvent', (data) => {
         if({{$uniqueChat->id}} == data.chat.id){
           
   
