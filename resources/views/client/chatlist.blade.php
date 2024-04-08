@@ -43,10 +43,13 @@
     </div>
     <script>
        
-        Echo.channel('MessageUpdate').listen('ChatEvent', (data) => {
+        Echo.private('MessageUpdate').listen('ChatEvent', (data) => {
         if ({{ auth()->id() }} === data.chat.user_id) {
         console.log(data);
         }  
+        });
+        Echo.private('one-to-one').listen('MessageEvent', (data) => {  
+        console.log(data);
         });
     </script>
     <script>

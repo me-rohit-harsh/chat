@@ -100,7 +100,9 @@
                                                         <span class="badge {{$statusColor}}">{{ $chat->status }}</span>
 
                                                     </h6>
-                                                    <small>{{ $chat->category }}</small>
+                                                   <small>
+                                                    <?php echo htmlspecialchars(substr($chat->category, 0, 35)); ?>
+                                                </small>
                                                 </div>
                                             </div>
                                             <small>{{ $chat->created_at->format('h:i A') }}</small>
@@ -299,14 +301,14 @@
     </div>
     <script>
         // To listen the event  
-        // Echo.channel('MessageUpdate')
+        // Echo.private('MessageUpdate')
         // .listen('ChatEvent', (event) => {
         // console.log(event.chat);
         // });
         // To display the user msg in the tab
 
         @if(isset($uniqueChat))
-        Echo.channel('UserChat').listen('UserChatEvent', (data) => {
+        Echo.private('UserChat').listen('UserChatEvent', (data) => {
         if({{$uniqueChat->id}} == data.chat.id){
           
   

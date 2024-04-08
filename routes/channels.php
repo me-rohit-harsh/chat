@@ -19,3 +19,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('MessageUpdate', function ($user) {
     return $user;
 });
+Broadcast::channel('UserChat', function ($user) {
+    return $user;
+});
+Broadcast::channel('one-to-one', function ($user) {
+    return $user;
+});

@@ -20,7 +20,12 @@
     animation-fill-mode: both;
     /* overflow-y: scroll; */
 }
-
+@media only screen and (max-width: 768px) {
+    #chatBox {
+        height: 50%;
+        /* Set height to 50% for small devices */
+    }
+}
 #chatButton {
     position: fixed;
     bottom: 20px;

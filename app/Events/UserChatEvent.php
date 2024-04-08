@@ -34,6 +34,6 @@ class UserChatEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('UserChat');
+        return new PrivateChannel('UserChat');
     }
 }
