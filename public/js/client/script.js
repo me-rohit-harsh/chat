@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     var chatBox = document.getElementById('chatBox');
+    var messageContainer = document.getElementById('message-container');
     var chatButton = document.getElementById('chatButton');
     var maximizeButton = document.getElementById('maximizeChat');
 
@@ -8,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (chatBox.style.display === 'none') {
             chatBox.style.display = 'block';
             chatButton.innerHTML = '<i class="fas fa-times"></i>';
+            messageContainer.innerHTML='';
+            scrollChatToBottom();
+
         } else {
             chatBox.style.display = 'none';
             chatButton.innerHTML = '<i class="fa-solid fa-comments fas fa-2x"></i>';
@@ -40,6 +44,7 @@ function sendMessage(message) {
     var convForm = document.getElementById('convForm');
     var userInput = document.getElementById('userMessageInput');
     convForm.style.display = 'none';
+    convForm.innerHTML = '';
     userInput.style.display = '';
 
 
@@ -78,6 +83,21 @@ function sendMessage(message) {
 
 }
 
+// Conversation chat update 
+function addConversation(message){
+  // Construct the message
+  var userMessage = `
+        <div class="message outgoing">
+            <div class="message-content">
+               ${message}           
+            </div>
+        </div>
+    `;
+     $('#chat_msg').val('');
+     // Append the user message to the chat box
+     document.getElementById('chatMessages').innerHTML += userMessage;
+      scrollChatToBottom();
+}
 // Add event listener to the form submit button to send the message
 // document.querySelector('form').addEventListener('submit', function (event) {
 //     event.preventDefault(); // Prevent form submission

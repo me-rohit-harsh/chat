@@ -50,6 +50,7 @@ class ChatController extends Controller
     }
 
     public function updateChatMessage(Request $request, $id){
+        // dd($request->all());
         // Validate the incoming request data
         $request->validate([
             'message' => 'required|string',
@@ -61,6 +62,7 @@ class ChatController extends Controller
         // Update the chat message content
         $chat->message = $request->input('message');
         $chat->save();
+        event(new UserChatEvent($chat));
 
         // Return a response indicating success
         return response()->json(['message' => 'Chat message updated successfully'], 200);

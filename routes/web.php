@@ -15,7 +15,7 @@ use App\Http\Controllers\ChatController;
 |
 */
 
-Route::put('/update-chat-message/{id}',[ChatController::class, 'updateChatMessage'])->name('update.chat.message');
+Route::post('/update-chat-message/{id}',[ChatController::class, 'updateChatMessage'])->name('update.chat.message');
 
 Route::get('/chat', [ChatController::class, 'chat'])->middleware(['auth'])->name('user.chat');
 Route::get('/chatlist', [ChatController::class, 'chatList'])->middleware(['auth'])->name('user.chat.list');

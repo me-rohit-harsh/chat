@@ -1,10 +1,10 @@
 /* Styling the scrollbar */
 .live-chats {
-    padding-bottom: 25%;
-    min-height: 100vh;
+    padding-bottom: 2%;
+    min-height: calc(100vh - 100px);
     overflow-y: auto;
     /* Change to auto to show scrollbar only when needed */
-    max-height: 100vh;
+    max-height: calc(100vh - 100px);
     scrollbar-width: thin;
     /* Firefox */
     scrollbar-color: #e8e6e6 hsl(0, 0%, 99%);
@@ -194,17 +194,21 @@
     max-height: 100vh;
     overflow: hidden;
 }
-a{
+
+a {
     text-decoration: none;
     color: #000;
 }
+
 #chat-adminSide .input-group>.form-control,
 #chat-adminSide .input-group>.form-floating,
-#chat-adminSide .input-group>.form-select{
+#chat-adminSide .input-group>.form-select {
     flex: 0.6 0.5 auto;
 }
-textarea{
+
+textarea {
     max-height: 150px !important;
     min-height: 30px !important;
 }
+
 /*  Admin right side css ends  */
