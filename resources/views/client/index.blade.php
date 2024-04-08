@@ -105,10 +105,10 @@
         $('#convForm').submit(function(event) {
             // Prevent default form submission
             event.preventDefault();
-var message = $('#message').val();
+            var message = $('#message').val();
             // Get form data
             var formData = $(this).serialize();
-// console.log(formData);
+            // console.log(formData);
             // Send AJAX request
             $.ajax({
                 url: '/start-conv', // Assuming this is the route to your startConv function
