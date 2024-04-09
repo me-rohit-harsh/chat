@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-header bg-info text-white">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by User/Status"
+                                <input type="text" class="form-control" placeholder="Search by Ticket Id/User "
                                     id="searchInput">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterBtn"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -98,8 +98,7 @@
                                                 <div>
                                                     <h6 class="mb-0">
                                                         {{ $chat->user->name }}
-
-                                                        <span class="badge {{$statusColor}}">{{ $chat->status }}</span>
+<span class=" badge bg-secondary text-light">#{{ $chat->id}}</span>
 
                                                     </h6>
                                                    <small>
@@ -108,8 +107,7 @@
                                                 </div>
                                             </div>
                                             <!-- Timestamp -->
-                                            <small></small>
-                                            <small> <span class=" badge bg-secondary text-light">#{{ $chat->id}}</span> <br>{{ $chat->created_at->format('h:i A') }}</small>
+                                            <small> <span class="badge {{$statusColor}}">{{ $chat->status }}</span> <br>{{ $chat->created_at->format('h:i A') }}</small>
                                         
                                         </div>
                                     </a>
@@ -181,6 +179,7 @@
                                             {{$uniqueChat->user->name}}
                                             <span class="badge {{$statusColor}}">{{$uniqueChat->status}}</span>
                                             <!-- Badge for status -->
+                                            <span class=" badge bg-secondary text-light">#{{ $uniqueChat->id}}</span>
                                         </h6>
                                         <small>{{$uniqueChat->user->name}}@gmail.com</small>
                                     </div>

@@ -84,6 +84,7 @@ class AdminController extends Controller
 
         // Update the chat with admin reply
         $chat->admin_reply = $request->input('adminMsg');
+        $chat->status='in process';
         $chat->save();
 
         // Dispatch the ChatEvent
