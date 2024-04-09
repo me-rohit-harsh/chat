@@ -25,7 +25,7 @@ Route::group(['middleware' => CheckRole::class . ':admin'], function () {
 
 // User routes here
 Route::group(['middleware' => CheckRole::class . ':user'], function () {
-    Route::post('/update-chat-message/{id}', [ChatController::class, 'updateChatMessage'])->name('update.chat.message');
+    Route::post('/update-chat-message', [ChatController::class, 'updateChatMessage'])->name('update.chat.message');
     Route::get('/chat', [ChatController::class, 'chat'])->middleware(['auth'])->name('user.chat');
     Route::get('/chatlist', [ChatController::class, 'chatList'])->middleware(['auth'])->name('user.chat.list');
     Route::post('/start-conv', [ChatController::class, 'startConv'])->middleware(['auth'])->name('user.conv');

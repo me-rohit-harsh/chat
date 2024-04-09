@@ -19,15 +19,21 @@ class ChatController extends Controller
             ->where('status', '!=', 'closed')
             ->orderBy('created_at', 'desc')
             ->first();
-        // dd($lastOpenChat);
-        // Check if the chat exists
+
+        // Check if the last open chat exists
         if ($lastOpenChat) {
+            // Retrieve all chats
+            // Retrieve conversations related to the last open chat
+            $conversations = $lastOpenChat->conversations()->orderBy('created_at', 'asc')->get();
 
+            // Return the view with the data
+            return view('client.index', compact('lastOpenChat', 'conversations'));
         } else {
-
+            // No active chat found, return the view without data
+            return view('client.index', compact('lastOpenChat'));
         }
-        return view('client.index');
     }
+
     public function startConv(Request $request)
     {
         // Validate the incoming request data
@@ -64,7 +70,7 @@ class ChatController extends Controller
         return view('client.chatlist', compact('chats'));
     }
 
-    public function updateChatMessage(Request $request, $id)
+    public function updateChatMessage(Request $request)
     {
         // dd($request->all());
         // Validate the incoming request data
@@ -72,12 +78,16 @@ class ChatController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Find the chat message by its ID
-        $chat = Chat::findOrFail($id);
-        $id = Auth()->user()->id;
+        // Get the ID of the authenticated user
+        $userId = Auth::id();
+        // Find the chat related to the authenticated user's ID
+        $chat = Chat::where('user_id', $userId)
+            ->where('status', '!=', 'closed')
+            ->orderBy('created_at', 'desc')
+            ->first();
         $conversation = new Conversation;
         $conversation->chat_id = $chat->id;
-        $conversation->user_id = $id;
+        $conversation->user_id = $userId;
         $conversation->con_type = 'customer';
         $conversation->message = $request->input('message');
         $conversation->save();

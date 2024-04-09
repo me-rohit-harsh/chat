@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="{{ asset('css/client/style.css') }}" rel="stylesheet">
     <script src="{{asset('js/app.js')}}"></script>
+    <script>
+        var hasActiveChat = {{ $lastOpenChat ? 'true' : 'false' }}; // Check if there is an active chat
+        var activeChatId = {{ $lastOpenChat ? $lastOpenChat->id : 'null' }}; // Get the ID of the active chat, or null if no active chat
+    </script>
 </head>
 
 <body>
@@ -42,21 +46,41 @@
                         class="fas fa-compress-alt"></i></button>
             </div>
             <div class="card-body chat-content" id="userMgCon">
-               
+                
                 <div id="chatMessages" class="container">
+                    @if($lastOpenChat)
+                    <!-- Display messages -->
+                    <div class="message outgoing">
+                        <div class="message-content">
+                            {{ $lastOpenChat->message }}
+                        </div>
+                    </div>
+                    @foreach($conversations as $conversation)
+                    @if($conversation->con_type == 'customer')
+                    <!-- User's message -->
+                    <div class="message outgoing">
+                        <div class="message-content">
+                            {{ $conversation->message }}
+                        </div>
+                    </div>
+                    @else
+                    <!-- Admin's reply -->
+                    <div class="message incoming">
+                        <div class="message-content">
+                            {{ $conversation->message }}
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                   @endif
                 </div>
 
             </div>
+           @if(!$lastOpenChat)
             <form id="convForm" class="container">
                 @csrf
                 <p>Please select the department you wish to talk to.
                 </p>
-                {{-- <div class="form-group row">
-                    <label for="name" class="col-sm-4 col-form-label">Name</label>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" id="name" placeholder="Enter full name" required name="name">
-                    </div>
-                </div> --}}
                 <div class="form-group row">
                     <label for="department" class="col-sm-4 col-form-label">Department</label>
                     <div class="col-12">
@@ -71,15 +95,16 @@
                 <div class="form-group row">
                     <label for="subject" class="col-sm-4 col-form-label">Subject</label>
                     <div class="col-sm-12">
-                        <input type="text" class="form-control" id="subject" placeholder="Enter Subject" required name="category">
+                        <input type="text" class="form-control" id="subject" placeholder="Enter Subject" required
+                            name="category">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="message" class="col-sm-4 col-form-label">Message</label>
                     <div class="col-sm-12">
-                        <textarea name="message" class="form-control" id="message" rows="4" placeholder="Enter your message"
-                            required></textarea>
-            
+                        <textarea name="message" class="form-control" id="message" rows="4"
+                            placeholder="Enter your message" required></textarea>
+
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom: 1rem;">
@@ -88,12 +113,13 @@
                     </div>
                 </div>
             </form>
+            @endif
             <form action="" id="chatForm">
                 @csrf
                 <div class="input-group p-3" id="userMessageInput" style="display: none;">
                     <input type="text" name="chatMsg" id="chat_msg" class="form-control"
                         placeholder="Type your message...">
-                    <button class="btn btn-primary sendbutton" type="button" id="sendMessageButton">Send
+                    <button class="btn btn-primary sendbutton" type="submit" id="sendMessageButton">Send
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -116,17 +142,20 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-                    var hiddenInput = $('<input>').attr({
-                    type: 'hidden',
-                    name: 'chatId',
-                    value: response.chatId,
-                    id:'chat_id'
-                    });  
+                    // append the chat_id input fiedl for the route update-chat-message/chat_id 
+                    // If you will uncomment this then you must update the route, ajax, and function accordingly 
+                    // var hiddenInput = $('<input>').attr({
+                    // type: 'hidden',
+                    // name: 'chatId',
+                    // value: response.chatId,
+                    // id:'chat_id'
+                    // });  
+                  
+                    // $('#chatForm').append(hiddenInput);
                     // Diplaying the msg in the text tab as soon as the conversation started 
                     // Previously i was utilize the Event to do so as done below
                     sendMessage(message);
                     // Append the hidden input to your form or any other desired location
-                    $('#chatForm').append(hiddenInput);
                     // Handle successful response
                     // alert('Conversation started successfully');
                 },
@@ -152,7 +181,7 @@
             };
             // Send AJAX request
             $.ajax({
-                url: '{{ url("update-chat-message") }}/' + $('#chat_id').val(), 
+                url: '{{ url("update-chat-message") }}', 
                 type: 'POST',
                 data: requestData,
                 headers: {
@@ -166,6 +195,7 @@
                 },
                 error: function(xhr) {
                     // Handle error response
+                    alert("Oops! Something went wrong.. Please try again")
                     console.error('Failed to update chat message:', xhr.responseText);
                 }
             });
@@ -211,6 +241,15 @@
         // });
         // To display the next msg of user 
 
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Check if there is an active chat
+            if (hasActiveChat) {
+                var userInput = document.getElementById('userMessageInput');
+                userInput.style.display = '';
+            }
+        });
     </script>
     <script src="{{ asset('js/client/script.js') }}"></script>
 </body>
