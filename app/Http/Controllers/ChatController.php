@@ -19,12 +19,12 @@ class ChatController extends Controller
             ->where('status', '!=', 'closed')
             ->orderBy('created_at', 'desc')
             ->first();
-        dd($lastOpenChat);
+        // dd($lastOpenChat);
         // Check if the chat exists
         if ($lastOpenChat) {
 
         } else {
-            
+
         }
         return view('client.index');
     }

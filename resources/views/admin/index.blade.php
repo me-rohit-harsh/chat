@@ -305,12 +305,6 @@
         </div>
     </div>
     <script>
-        // To listen the event  
-        // Echo.private('MessageUpdate')
-        // .listen('ChatEvent', (event) => {
-        // console.log(event.chat);
-        // });
-        // To display the user msg in the tab
 
         @if(isset($uniqueChat)&&$uniqueChat->status!='closed')
         Echo.private('UserChatUpdate').listen('UserChatUpdateEvent', (data) => {
