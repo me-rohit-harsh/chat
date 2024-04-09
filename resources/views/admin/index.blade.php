@@ -12,6 +12,17 @@
     <!-- Custom CSS -->
     <link href="{{ asset('css/admin/style.css') }}" rel="stylesheet">
     <script src="{{asset('js/app.js')}}"></script>
+
+    <style>
+        #chat{{ $uniqueChat->id }}{
+        background-color: #bbfcff;
+        border-bottom: 2px solid #6ec2e0; /* Border */
+        transition: background-color 0.3s ease, border-width 0.3s ease; /* Transition effect */
+        }
+        #chat{{$uniqueChat->id}}:hover {
+        background-color: #b2dff0;
+        }
+    </style>
 </head>
 
 <body>
@@ -308,7 +319,6 @@
 
         @if(isset($uniqueChat)&&$uniqueChat->status!='closed')
         Echo.private('UserChatUpdate').listen('UserChatUpdateEvent', (data) => {
-            console.log(data);
         if({{$uniqueChat->id}} == data.conversation.chat_id){
             var html = `
             <div class="message incoming">
