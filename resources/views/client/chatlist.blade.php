@@ -23,7 +23,7 @@
                         <th>Message</th>
                         <th>Open Time</th>
                         <th>Status</th>
-                        <th>Admin Reply</th>
+                        <th>Last Admin Reply</th>
                     </tr>
                 </thead>
                 <tbody>

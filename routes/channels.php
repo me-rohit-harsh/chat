@@ -25,3 +25,6 @@ Broadcast::channel('UserChat', function ($user) {
 Broadcast::channel('one-to-one', function ($user) {
     return $user;
 });
+Broadcast::channel('UserChatUpdate', function ($user) {
+    return $user;
+});
