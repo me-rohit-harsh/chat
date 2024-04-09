@@ -45,7 +45,7 @@
                                                 process</button></li>
                                         <li><button type="submit" class="dropdown-item text-danger" name="status"
                                                 value="closed">Closed</button></li>
-                                        <!-- Add more status options as needed -->
+                                     
                                     </ul>
                                 </form>
                             </div>
@@ -53,7 +53,7 @@
                         <ul class="list-group list-group-flush live-chats " id="chatList">
 
 
-                            <!-- Chat Item 1 -->
+                           
                             <ul class="list-group">
                                 @foreach($chats as $chat)
                                 <li class="list-group-item" id="chat{{$chat->id}}">
@@ -95,7 +95,7 @@
                                                     class="fa-solid fa-user text-dark rounded-circle me-3 p-2 {{ $departmentColor }} text-white"></i>
                                                 <div>
                                                     <h6 class="mb-0">
-                                                        {{ $chat->name }}
+                                                        {{ $chat->user->name }}
 
                                                         <span class="badge {{$statusColor}}">{{ $chat->status }}</span>
 
@@ -105,18 +105,14 @@
                                                 </small>
                                                 </div>
                                             </div>
-                                            <small>{{ $chat->created_at->format('h:i A') }}</small>
-                                            <!-- Assuming created_at field in your Chat model -->
                                             <!-- Timestamp -->
+                                            <small>{{ $chat->created_at->format('h:i A') }}</small>
+                                        
                                         </div>
                                     </a>
                                 </li>
                                 @endforeach
                             </ul>
-
-                            <!-- Repeat similar structure for other chat items -->
-
-                            <!-- Add more chat items as needed -->
                         </ul>
                     </div>
                 </div>
@@ -169,11 +165,11 @@
                                         class="fa-solid fa-user text-dark rounded-circle me-3 p-2 {{$departmentColor}} text-white"></i>
                                     <div>
                                         <h6 class="mb-0">
-                                            {{$uniqueChat->name}}
+                                            {{$uniqueChat->user->name}}
                                             <span class="badge {{$statusColor}}">{{$uniqueChat->status}}</span>
                                             <!-- Badge for status -->
                                         </h6>
-                                        <small>{{$uniqueChat->name}}@gmail.com</small>
+                                        <small>{{$uniqueChat->user->name}}@gmail.com</small>
                                     </div>
                                 </div>
                                 <a type="button" class="btn-close" aria-label="Close"
@@ -184,34 +180,42 @@
                         <div class="card-body msg-box-body overlay" style="overflow-y: auto;" id="chatContainer">
                             <!-- Chat Messages -->
                             <div class="chat-messages" id="chatMessageId">
-
-
-                                <!-- User's Message -->
                                 <div class="message incoming">
                                     <i class="fa-solid fa-user text-dark"></i>
                                     <div class="message-content">
                                         {{$uniqueChat->message}}
                                         <div class="message-meta">
-                                            <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
+                                            <span class="message-time">{{ $uniqueChat->created_at->format('h:i A') }}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- User's Message -->
-                                <!-- Admin's Message -->
-                                @if ($uniqueChat->admin_reply != null)
-
+                               
+                                @foreach($conversations as $conversation)
+                              
+                                @if ($conversation->con_type == 'customer')
+                                <div class="message incoming">
+                                    <i class="fa-solid fa-user text-dark"></i>
+                                    <div class="message-content">
+                                        {{$conversation->message}}
+                                        <div class="message-meta">
+                                            <span class="message-time">{{ $conversation->created_at->format('h:i A') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                @elseif ($conversation->con_type == 'admin')
                                 <div class="message outgoing">
                                     <div class="message-content">
-                                        {{$uniqueChat->admin_reply}}
+                                        {{$conversation->message}}
                                         <div class="message-meta">
-                                            <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
+                                            <span class="message-time">{{ $conversation->created_at->format('h:i A') }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 @endif
-                                <!-- Add more messages as needed -->
+                                @endforeach
                             </div>
-                            <!-- Chat Input -->
+                         
                             @if($uniqueChat->status!="closed")
                             <form id="adminReplyForm">
                                 @csrf
@@ -307,17 +311,15 @@
         // });
         // To display the user msg in the tab
 
-        @if(isset($uniqueChat))
-        Echo.private('UserChat').listen('UserChatEvent', (data) => {
-        if({{$uniqueChat->id}} == data.chat.id){
-          
-  
+        @if(isset($uniqueChat)&&$uniqueChat->status!='closed')
+        Echo.private('UserChatUpdate').listen('UserChatUpdateEvent', (data) => {
             console.log(data);
+        if({{$uniqueChat->id}} == data.conversation.chat_id){
             var html = `
             <div class="message incoming">
                 <i class="fa-solid fa-user text-dark"></i>
                 <div class="message-content">
-                    ${data.chat.message}
+                    ${data.conversation.message}
                     <div class="message-meta">
                      <span class="message-time">{{ $chat->updated_at->format('h:i A') }}</span>
                     </div>
