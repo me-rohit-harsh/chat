@@ -13,16 +13,7 @@
     <link href="{{ asset('css/admin/style.css') }}" rel="stylesheet">
     <script src="{{asset('js/app.js')}}"></script>
 
-    <style>
-        #chat{{ $uniqueChat->id }}{
-        background-color: #bbfcff;
-        border-bottom: 2px solid #6ec2e0; /* Border */
-        transition: background-color 0.3s ease, border-width 0.3s ease; /* Transition effect */
-        }
-        #chat{{$uniqueChat->id}}:hover {
-        background-color: #b2dff0;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -168,6 +159,16 @@
                     break;
                     }
                     @endphp
+                        <style>
+        #chat{{ $uniqueChat->id }}{
+        background-color: #bbfcff;
+        border-bottom: 2px solid #6ec2e0; /* Border */
+        transition: background-color 0.3s ease, border-width 0.3s ease; /* Transition effect */
+        }
+        #chat{{$uniqueChat->id}}:hover {
+        background-color: #b2dff0;
+        }
+    </style>
                     <div class="card msg-box">
                         <div class="card-header .bg-light " style="z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between">
@@ -189,6 +190,7 @@
                             </div>
 
                         </div>
+                        
                         <div class="card-body msg-box-body overlay" style="overflow-y: auto;" id="chatContainer">
                             <!-- Chat Messages -->
                             <div class="chat-messages" id="chatMessageId">
