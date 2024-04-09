@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-header bg-info text-white">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by User/Status"
+                                <input type="text" class="form-control" placeholder="Search by Ticket Id/User "
                                     id="searchInput">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterBtn"
                                     data-bs-toggle="dropdown" aria-expanded="false">
