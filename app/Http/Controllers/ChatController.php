@@ -14,6 +14,18 @@ class ChatController extends Controller
 
     public function chat()
     {
+        $authId = Auth()->user()->id;
+        $lastOpenChat = Chat::where('user_id', $authId)
+            ->where('status', '!=', 'closed')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        dd($lastOpenChat);
+        // Check if the chat exists
+        if ($lastOpenChat) {
+
+        } else {
+            
+        }
         return view('client.index');
     }
     public function startConv(Request $request)

@@ -106,7 +106,8 @@
                                                 </div>
                                             </div>
                                             <!-- Timestamp -->
-                                            <small>{{ $chat->created_at->format('h:i A') }}</small>
+                                            <small></small>
+                                            <small> <span class=" badge bg-secondary text-light">#{{ $chat->id}}</span> <br>{{ $chat->created_at->format('h:i A') }}</small>
                                         
                                         </div>
                                     </a>
