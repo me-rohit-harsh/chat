@@ -179,7 +179,7 @@
                                             {{$uniqueChat->user->name}}
                                             <span class="badge {{$statusColor}}">{{$uniqueChat->status}}</span>
                                             <!-- Badge for status -->
-                                            <span class=" badge bg-secondary text-light">#{{ $uniqueChat->id}}</span>
+                                            <span class=" badge bg-secondary text-light rounded-pill">#{{ $uniqueChat->id}}</span>
                                         </h6>
                                         <small>{{$uniqueChat->user->name}}@gmail.com</small>
                                     </div>
