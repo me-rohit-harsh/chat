@@ -251,10 +251,13 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Check if there is an active chat
-            if (hasActiveChat) {
+            // Check if there is an active chat     
+            if (hasActiveChat) {              
                 var userInput = document.getElementById('userMessageInput');
                 userInput.style.display = '';
+                setTimeout(function() {
+                checkResponse();
+                }, 120000);
             }
         });
     </script>

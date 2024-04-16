@@ -22,9 +22,16 @@ Route::group(['middleware' => CheckRole::class . ':admin'], function () {
     Route::post('/admin', [AdminController::class, 'postChats'])->middleware(['auth'])->name('admin.chat.post');
     Route::get('/admin/chat/{chat_id}', [AdminController::class, 'showChat'])->middleware(['auth'])->name('admin.chat.show');
     Route::post('/admin/reply', [AdminController::class, 'sendAdminReply'])->middleware(['auth'])->name('admin.reply');
+    Route::post('ticket/customer/conversation', [TicketController::class, 'ticketCustomerConv'])->name('ticket.customer.con');
+    Route::delete('/delete-ticket/{id?}', [TicketController::class, 'delete'])->name('ticket.delete');
 
-    Route::get('/admin/ticket/{id?}', [TicketController::class, 'showTicket'])->middleware(['auth'])->name('admin.ticket.show');
-    Route::get('/admin/ticket', [TicketController::class, 'adminTicket'])->middleware(['auth'])->name('admin.ticket');
+    Route::post('ticket/admin/conversation', [TicketController::class, 'ticketAdminConv'])->name('ticket.admin.con');
+    Route::post('ticket/conversation', [TicketController::class, 'ticketConversation'])->name('ticket.conversation');
+    Route::post('save-ticket-status', [TicketController::class, 'saveTicketStatus'])->name('save.ticket.status');
+    Route::post('save-comment', [TicketController::class, 'saveComment'])->name('save.commet'); 
+    Route::post('admin_reply', [TicketController::class, 'adminReply'])->name('save.reply');
+    Route::get('/admin/ticket/{id}', [TicketController::class, 'viewTickets'])->middleware(['auth'])->name('admin.ticket.show');
+    Route::get('/admin/tickets', [TicketController::class, 'index'])->middleware(['auth'])->name('ticket.list');
 });
 
 // User routes here
