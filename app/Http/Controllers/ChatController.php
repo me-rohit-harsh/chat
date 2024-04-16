@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Events\UserChatUpdateEvent;
 use App\Events\UserChatEvent;
 use App\Models\Conversation;
+use App\Jobs\CreateTicket;
+use App\Models\Ticket;
+use App\Events\ChatEvent;
 
 class ChatController extends Controller
 {
@@ -58,6 +61,9 @@ class ChatController extends Controller
         $chat->save();
         event(new UserChatEvent($chat));
 
+        // Dispatch the CreateTicket job with a delay of 2 minute
+        // CreateTicket::dispatch($chat)->delay(now()->addMinutes(2));
+
         // Optionally, you can return a response indicating success or failure
         return response()->json(['message' => 'Conversation started successfully', 'chatId' => $chat->id], 200);
     }
@@ -100,4 +106,38 @@ class ChatController extends Controller
         // Return a response indicating success
         return response()->json(['message' => 'Chat message updated successfully'], 200);
     }
+
+    public function checkResponse()
+    {
+        $authId = Auth()->user()->id;
+        $chat = Chat::where('user_id', $authId)
+            ->where('status', '!=', 'closed')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+            // Check if updated_at and created_at are the same after 2 minutes
+            if ($chat->updated_at == $chat->created_at) {
+            // Create a ticket
+            $ticket = new Ticket();
+            $ticket->user_id = $chat->user_id;
+            $ticket->department = $chat->department;
+            $ticket->category = $chat->category;
+            $ticket->message = $chat->message;
+            $ticket->status = 'open';
+            $ticket->save();
+
+            // Update chat's admin_reply field
+            $chat->admin_reply = "Ticket Id : $ticket->id. As our customer support is busy, your chat has been converted to a ticket. Please check your email for further updates. Thank you.";
+            $chat->status='closed';
+            $chat->save();
+
+            //Dispatch an event
+            event(new ChatEvent($chat));
+
+            return response()->json(['success' => true, 'ticketId' => $ticket->id]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No action required']);
+    }
+
 }

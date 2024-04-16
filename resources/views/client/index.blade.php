@@ -46,7 +46,7 @@
                         class="fas fa-compress-alt"></i></button>
             </div>
             <div class="card-body chat-content" id="userMgCon">
-                
+
                 <div id="chatMessages" class="container">
                     @if($lastOpenChat)
                     <!-- Display messages -->
@@ -72,11 +72,11 @@
                     </div>
                     @endif
                     @endforeach
-                   @endif
+                    @endif
                 </div>
 
             </div>
-           @if(!$lastOpenChat)
+            @if(!$lastOpenChat)
             <form id="convForm" class="container">
                 @csrf
                 <p>Please select the department you wish to talk to.
@@ -155,6 +155,12 @@
                     // Diplaying the msg in the text tab as soon as the conversation started 
                     // Previously i was utilize the Event to do so as done below
                     sendMessage(message);
+                      
+                        setTimeout(function() {
+                        checkResponse();
+                        }, 120000);
+                     
+                   
                     // Append the hidden input to your form or any other desired location
                     // Handle successful response
                     // alert('Conversation started successfully');
@@ -196,7 +202,7 @@
                 error: function(xhr) {
                     // Handle error response
                     alert("Oops! Something went wrong.. Please try again")
-                    console.error('Failed to update chat message:', xhr.responseText);
+                    // console.error('Failed to update chat message:', xhr.responseText);
                 }
             });
         });
@@ -206,6 +212,7 @@
         // To display admin MSG 
         Echo.private('MessageUpdate').listen('ChatEvent', (data) => {
         if ({{ auth()->id() }} === data.chat.user_id) {
+            
         let chatBoxStyle = window.getComputedStyle(document.getElementById('chatBox')).display;
         
         if (chatBoxStyle === 'block') {
@@ -251,6 +258,22 @@
             }
         });
     </script>
+    <script>function checkResponse() {
+    $.ajax({
+    url: '/checkResponse',
+    type: 'POST',
+    headers: {
+    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token
+    },
+    success: function (response) {
+    console.log(response);
+    // Optionally handle the response
+    },
+    error: function (xhr, status, error) {
+    console.error(xhr.responseText);
+    }
+    });
+    };</script>
     <script src="{{ asset('js/client/script.js') }}"></script>
 </body>
 
