@@ -21,9 +21,15 @@
             <h1 class="jumbotron-heading">Welcome to Live Chat</h1>
             <p class="lead text-muted">Connect with your audience in real-time with our live chat web application.
                 Engage, support, and communicate with ease.</p>
-            <p>
+            <p class="text-center">
+                <strong>Chat Section: </strong>
                 <a href="{{route('admin.chat')}}" class="btn btn-primary my-2" target="_blank">Admin Side</a>
                 <a href="{{route('user.chat')}}" class="btn btn-secondary my-2" target="_blank">Client Side</a>
+            </p>
+            <p class="text-center">
+                <strong>Ticket Section: </strong>
+                <a href="{{route('admin.ticket')}}" class="btn btn-primary my-2" target="_blank">Admin Side</a>
+                <a href="{{route('user.raiseTicket')}}" class="btn btn-secondary my-2" target="_blank">Client Side</a>
             </p>
         </div>
     </section>

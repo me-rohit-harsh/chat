@@ -77,7 +77,7 @@ function sendMessage(message) {
     setTimeout(function () {
         document.getElementById('chatMessages').innerHTML += adminReply;
         scrollChatToBottom();
-    }, 5000); // Adjust the delay as needed (in milliseconds)
+    }, 10000); // Adjust the delay as needed (in milliseconds)
 
  
 
