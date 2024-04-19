@@ -41,13 +41,22 @@ class TicketController extends Controller
             ->paginate(10);
         return view('admin.Ticket.index', compact('tickets'));
     }
-    public function tickets(){
-        // Get the currently authenticated user's ID
-        $userId = auth()->id();
+    // public function tickets(){
+    //     // Get the currently authenticated user's ID
+    //     $userId = auth()->id();
 
-        // Retrieve all tickets associated with the user
-        $tickets = Ticket::where('user_id', $userId)->get();
-        return view('client.ticketlist', compact('tickets'));
+    //     // Retrieve all tickets associated with the user
+    //     $tickets = Ticket::where('user_id', $userId)->get();
+    //     return view('client.ticketlist', compact('tickets'));
+    // }
+
+    public function user_support_tickets()
+    {
+        $customerId= auth()->id();
+        $tickets = Ticket::where('user_id', $customerId)
+            ->orderByDesc('id')
+            ->paginate(10);
+        return view('client.Ticket.ticketlist', compact('tickets'));
     }
 
     public function viewTickets($id = null)
