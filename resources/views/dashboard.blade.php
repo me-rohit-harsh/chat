@@ -36,7 +36,7 @@
                                 <a href="{{route('ticket.list')}}" class="btn btn-primary my-2">Ticket Lists</a>
                                 @else
                                 <a href="{{route('user.raiseTicket')}}" class="btn btn-secondary my-2">Raise Ticket</a>
-                             <a class="btn btn-success" type="button" href="{{route('user.Ticket')}}">Tickets List</a>
+                             <a class="btn btn-success" type="button" href="{{route('user.Tickets')}}">Tickets List</a>
                                 @endif
                             </p>
                         </div>
