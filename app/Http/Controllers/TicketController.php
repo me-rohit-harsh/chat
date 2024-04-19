@@ -58,7 +58,44 @@ class TicketController extends Controller
             ->paginate(10);
         return view('client.Ticket.ticketlist', compact('ticket'));
     }
+    public function showTicket($id)
+    {
 
+        // Get the currently authenticated user
+        $customerId= auth()->id();
+        $customer = User::find($customerId);
+
+        // Find the ticket related to the current user by ID
+        $ticket = Ticket::where('user_id', $customerId)
+            ->where('id', $id)
+            ->first();
+
+        if ($ticket) {
+            // If the ticket is found, retrieve the ticket details and conversations
+
+            $adminconv = TicketConversation::with(['ticket'])
+            ->where('ticket_id', $id)
+                ->where('customer_type', 'Admin')
+                ->get();
+            $customerconv = TicketConversation::with(['ticket'])
+            ->where('ticket_id', $id)
+                ->where('customer_type', 'Customer')
+                ->get();
+
+            // Merge the admin and customer conversations
+            $mergedConversations = $adminconv->merge($customerconv);
+
+            // Sort the merged conversations based on their timestamps
+            $sortedConversations = $mergedConversations->sortByDesc('created_at');
+
+
+            // Pass the ticket, customer, and sorted conversations to the view
+            return view('client.Ticket.ticketsShow', compact('ticket', 'customer', 'sortedConversations'));
+        } else {
+            // If the ticket is not found, redirect the user to the ticket page
+            return redirect()->route('user_support_tickets')->with('error', 'Ticket not found.');
+        }
+    }
     public function viewTickets($id = null)
     {
         // Find the ticket related to the current user by ID
@@ -86,7 +123,7 @@ class TicketController extends Controller
             $conversations = $adminconv->merge($customerconv);
 
             // Sort the merged conversations based on their timestamps
-            $sortedConversations = $conversations->sortBy('created_at')->values();
+            $sortedConversations = $conversations->sortByDesc('created_at')->values();
 
             // Render the ticket details view with relevant data
             return view('admin.Ticket.ticket', compact('ticket', 'customer', 'id', 'sortedConversations'));
@@ -95,6 +132,7 @@ class TicketController extends Controller
             return redirect()->route('ticket.list')->with('error', 'Ticket not found.');
         }
     }
+
     public function ticketConversation(Request  $request)
     {
 
@@ -260,6 +298,64 @@ class TicketController extends Controller
                 'category' => '',
                 'status' => false,
             ], 500); // You can adjust the HTTP status code based on your requirements
+        }
+    }
+
+    public function CusTicketConversation(Request  $request)
+    {
+
+        try {
+
+            // $fileArray = $request->file('file');
+
+            // $lastInsertedId = '';
+            // $assetIds = [];
+            // if ($fileArray) {
+            //     foreach ($fileArray as $file) {
+            //         $path = $this->uploadService->upload($file);
+            //         $fileName = $file->getClientOriginalName();
+            //         $mimeType = $file->getMimeType();
+            //         $extension = $file->getClientOriginalExtension();
+
+            //         $asset = new Asset();
+            //         $asset->name = $fileName;
+            //         $asset->image_path = $path;
+            //         $asset->mime_type = $mimeType;
+            //         $asset->extensions = $extension;
+            //         $asset->save();
+            //         $lastInsertedId = $asset->id;
+            //         $assetIds[] = $lastInsertedId;
+            //     }
+            // }
+
+
+            $conversation = new TicketConversation();
+            $conversation->message = $request->message;
+            $conversation->customer_type = 'Customer';
+            $conversation->ticket_id = $request->ticketId;
+            $conversation->save();
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        session()->flash('success', 'Conversation added  successfully !!');
+        return redirect()->back();
+    }
+    public function closeTicket(Request $request)
+    {
+        try {
+            $ticket = Ticket::findOrFail($request->id);
+            $ticket->status = 'Closed';
+            $ticket->save();
+            return response()->json([
+                'msg' => 'Ticket closed successfully',
+                'status' => true,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'msg' => 'Error closing the ticket: ' . $e->getMessage(),
+                'status' => false,
+            ], 500);
         }
     }
 }

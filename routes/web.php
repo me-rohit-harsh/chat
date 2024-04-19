@@ -46,7 +46,17 @@ Route::group(['middleware' => CheckRole::class . ':user'], function () {
     Route::post('support-tickets', [TicketController::class, 'addTickets'])->middleware(['auth'])->name('add.tickets');
     Route::get('/raiseticket', [TicketController::class, 'raiseTicket'])->middleware(['auth'])->name('user.raiseTicket');
     Route::get('/tickets', [TicketController::class, 'user_support_tickets'])->middleware(['auth'])->name('user.Tickets');
-    Route::get('/tickets/{id?}', [TicketController::class, 'showUserTicket'])->middleware(['auth'])->name('user.show.ticket');
+    Route::get('/tickets/{id?}', [TicketController::class, 'showTicket'])->middleware(['auth'])->name('tickets.show');
+    Route::post('ticket/user/conversation', [TicketController::class, 'CusTicketConversation'])->name('ticket.cus.con');
+    Route::post('/close-ticket', [TicketController::class, 'closeTicket'])->name('close.ticket');
+
+
+
+
+
+
+
+
 });
 
 Route::get('/', function () {
