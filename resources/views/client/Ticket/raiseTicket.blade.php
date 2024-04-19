@@ -33,7 +33,7 @@
                 </ul>
             </div>
             @endif
-            <a class="btn btn-success mb-3" type="button" href="{{route('user.Ticket')}}">Tickets List</a>
+            <a class="btn btn-success mb-3" type="button" href="{{route('user.Tickets')}}"><i class="mx-2 fa-solid fa-list"></i>Tickets List </a>
             <div class="card p-1 mb-2">
                 <div class="card-header">
                     <h5 class="card-title" id="raiseTicketModalLabel">Raise Ticket</h5>
@@ -75,7 +75,7 @@
                         </div> --}}
                         <div class="form-group float-right">
                             <button type="submit" class="btn btn-primary">Submit<i
-                                    class="fa-solid fa-paper-plane ml-2"></i></button>
+                                    class="fa-solid fa-paper-plane mx-2"></i></button>
                         </div>
                     </form>
                 </div>
