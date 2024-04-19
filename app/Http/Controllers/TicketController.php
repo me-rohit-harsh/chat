@@ -10,7 +10,7 @@ use App\Models\User;
 class TicketController extends Controller
 {
     public function raiseTicket(){
-        return view('client.raiseTicket');
+        return view('client.Ticket.raiseTicket');
     }
     public function index(Request $request)
     {
@@ -53,10 +53,10 @@ class TicketController extends Controller
     public function user_support_tickets()
     {
         $customerId= auth()->id();
-        $tickets = Ticket::where('user_id', $customerId)
+        $ticket = Ticket::where('user_id', $customerId)
             ->orderByDesc('id')
             ->paginate(10);
-        return view('client.Ticket.ticketlist', compact('tickets'));
+        return view('client.Ticket.ticketlist', compact('ticket'));
     }
 
     public function viewTickets($id = null)
