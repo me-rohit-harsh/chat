@@ -116,13 +116,19 @@
             @endif
             <form action="" id="chatForm">
                 @csrf
-                <div class="input-group p-3" id="userMessageInput" style="display: none;">
-                    <input type="text" name="chatMsg" id="chat_msg" class="form-control"
-                        placeholder="Type your message...">
-                    <button class="btn btn-primary sendbutton" type="submit" id="sendMessageButton">Send
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
+               <div class="input-group p-3" id="userMessageInput" style="display: none;">
+                <input type="text" name="chatMsg" id="chat_msg" class="form-control" placeholder="Type your message...">
+            
+                <!-- File Attach Button -->
+                <button class="btn btn-secondary" type="button"  id="attach-file">
+                    <i class="fas fa-paperclip"></i>
+                </button>
+               
+                <!-- Send Button -->
+                <button class="btn btn-primary sendbutton" type="submit" id="sendMessageButton">
+                    Send <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
             </form>
         </div>
     </div>
