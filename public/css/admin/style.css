@@ -200,15 +200,70 @@ a {
     color: #000;
 }
 
-#chat-adminSide .input-group>.form-control,
-#chat-adminSide .input-group>.form-floating,
-#chat-adminSide .input-group>.form-select {
-    flex: 0.6 0.5 auto;
-}
 
 textarea {
-    max-height: 150px !important;
-    min-height: 30px !important;
+   min-height: 60px !important;
+overflow-y: auto !important;
+max-height: 200px;
+}
+#adminReplyForm .position-relative {
+    width: 100%
+}
+/* Styling for WebKit browsers like Chrome, Safari, and new versions of Edge */
+#adminMSG::-webkit-scrollbar {
+    width: 5px;
+    /* Width of the vertical scrollbar */
 }
 
+#adminMSG::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color of the track (part the scrollbar can move within) */
+}
+
+#adminMSG::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Color of the scrollbar itself */
+}
+
+#adminMSG::-webkit-scrollbar-thumb:hover {
+    background: #949393;
+    /* Color of the scrollbar on hover */
+}
+
+/* Firefox scrollbar styling */
+@supports (scrollbar-color: auto auto) {
+    #adminMSG {
+        scrollbar-color: #949393 #f1f1f1;
+        /* scrollbar and track color */
+        scrollbar-width: thin;
+        /* 'thin' or 'auto' or 'none' */
+    }
+}
+
+
 /*  Admin right side css ends  */
+#adminMSG {
+    min-height: 60px;
+    /* Initial minimum height */
+    padding-right: 120px;
+    /* Space for the button */
+    box-sizing: border-box;
+    /* Include padding in the height calculation */
+    overflow-y: hidden;
+    /* Prevent scrollbar */
+}
+
+.send-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+}
+.attach-btn{
+     position: absolute;
+     right: 55px;
+     top: 50%;
+     transform: translateY(-50%);
+     border: none;
+}

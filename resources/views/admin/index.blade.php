@@ -228,19 +228,32 @@
                                 @endif
                                 @endforeach
                             </div>
-                         
                             @if($uniqueChat->status!="closed")
-                            <form id="adminReplyForm">
-                                @csrf
-                                <input type="hidden" name="chatId" id="chatId" value="{{$uniqueChat->id}}">
-                                <div class="input-group mb-2 pr-5" style="position: fixed; bottom: 0;">
-                                    <textarea name="adminMsg" id="adminMSG" class="form-control" rows="1"></textarea>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-success" type="submit"> <i
-                                                class="fa-solid fa-paper-plane fa-2x"></i></button>
-                                    </div>
-                                </div>
-                            </form>
+                         <form id="adminReplyForm">
+                            @csrf
+                            <input type="hidden" name="chatId" id="chatId" value="{{$uniqueChat->id}}">
+                            <div class="position-relative mb-2" style="position: fixed; bottom: 0; width: 100%;">
+                                <textarea name="adminMsg" id="adminMSG" class="form-control"></textarea>
+                                <button class="btn send-btn" type="submit">
+                                    <i class="fa-solid fa-paper-plane fa-2x"></i>
+                                </button>
+                                <button class="btn attach-btn" type="button">
+                                <i class="fa-regular fa-file-export fas fa-2x"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                            const textarea = document.getElementById('adminMSG');
+                        
+                            function autoExpand() {
+                                textarea.style.height = 'inherit';  // Reset height - allows shrinkage on deletion
+                                textarea.style.height = `${textarea.scrollHeight}px`;  // Set to exact scroll height
+                            }
+                        
+                            textarea.addEventListener('input', autoExpand);  // Listen for input events
+                        });
+                        </script>
                             <script>
                                 document.getElementById("adminReplyForm").addEventListener("submit", function(event) {
                                     event.preventDefault(); // Prevent default form submission
