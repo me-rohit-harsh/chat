@@ -249,7 +249,7 @@
                 <div class="">
                     <div class="row">
                         <div class="col-md-12">
-                            @if ($conversation->customer_type === "Admin")
+                            @if ($conversation->con_type === "Admin")
                             <div class="container shadow card p-3 my-2 userChat">
                                 <div class="row ">
 
@@ -483,6 +483,75 @@
 
                     </div>
 
+                </div>
+                <div class="container card shadow p-3 my-2 supportChat">
+                    <div class="row ">
+                        <div class="col-3 devider">
+                            <div class="leftcol text-right">
+                                <div class="submitter my-2">
+                                    <div class="name">
+                                        <div class="requestor-name">
+                                            <a href="clientssummary.php?userid=3327">
+                                                {{$customer->firstname}} {{$customer->lastname}}
+                                            </a>
+                                        </div>
+                                        <span class="label requestor-type-owner">
+                                            Owner
+                                        </span>
+                                    </div>
+                                    <div class="title">
+                                        <a href="mailto:{{$customer->email}}">{{$customer->email}}</a>
+                                        <br>
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="rightcol">
+                                <div class="postedon d-flex mb-2" style="justify-content: space-between ">
+                                    <span class="badge bg-info text-dark" style="color: #000 ">Posted on {{
+                                        $ticket->created_at->isoFormat('dddd Do MMMM [at] HH:mm') }}</span>
+                                    <div class=" p-1"><i class="fas fa-solid fa-comment commentIcon"></i></div>
+                                </div>
+                
+                                <div class="msgwrap" id="contentt19953">
+                                    <div class="">
+                                        <p>{{$ticket->message}}</p>
+                
+                                        <!-- Display attachment if available -->
+                                        @if($ticket->asset_id)
+                                        <div>
+                                            <p class="mb-1">Attachment(s):</p>
+                                            @php
+                                            $assetPaths = getAssetPathList($conversation->asset_id);
+                                            $assetCount = count($assetPaths);
+                                            @endphp
+                                            @foreach($assetPaths as $index => $imgpath)
+                                            <a target="_blank" href="{{ asset($imgpath) }}" class="image-link1">
+                                                View Image {{ $index + 1 }} of {{ $assetCount }}
+                                            </a>
+                                            @if(!$loop->last)
+                                            <br>
+                                            @endif
+                                            @endforeach
+                                        </div>
+                                        @endif
+                
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <hr>
+                                <!-- Moved IP address here -->
+                                <p class="mb-0 px-3">IP Address: {{$customer->ip_address}}</p>
+                            </div>
+                        </div>
+                
+                
+                
+                
+                    </div>
                 </div>
             </section>
 

@@ -155,10 +155,12 @@ textarea {
     border-radius: 20px;
     /* Rounded corners */
 }
-
+#attach-file{
+    border-radius: 0;
+}
 /* Style the send message button */
 .sendbutton {
-    /* border-radius-: 50%; */
+    border-radius: 0%;
     border-bottom-right-radius: 100px;
     border-top-right-radius: 100px;
     /* Circular shape */

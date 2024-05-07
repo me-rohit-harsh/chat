@@ -75,11 +75,11 @@ class TicketController extends Controller
 
             $adminconv = TicketConversation::with(['ticket'])
             ->where('ticket_id', $id)
-                ->where('customer_type', 'Admin')
+                ->where('con_type', 'Admin')
                 ->get();
             $customerconv = TicketConversation::with(['ticket'])
             ->where('ticket_id', $id)
-                ->where('customer_type', 'Customer')
+                ->where('con_type', 'Customer')
                 ->get();
 
             // Merge the admin and customer conversations
@@ -111,12 +111,12 @@ class TicketController extends Controller
             // Retrieve conversations related to the ticket
             $adminconv = TicketConversation::with(['ticket'])
             ->where('ticket_id', $id)
-                ->where('customer_type', 'Admin')
+                ->where('con_type', 'Admin')
                 ->get();
 
             $customerconv = TicketConversation::with(['ticket'])
             ->where('ticket_id', $id)
-                ->where('customer_type', 'Customer')
+                ->where('con_type', 'Customer')
                 ->get();
 
             // Merge the admin and customer conversations
@@ -168,7 +168,7 @@ class TicketController extends Controller
 
             $conversation = new TicketConversation();
             $conversation->message = $request->message;
-            $conversation->customer_type = 'Admin';
+            $conversation->con_type = 'Admin';
             $conversation->ticket_id = $request->ticketId;
             // if ($fileArray) {
             //     $conversation->asset_id = $assetIdsList;
@@ -226,7 +226,7 @@ class TicketController extends Controller
             }
 
             $conversation->message = $validatedData['message'];
-            $conversation->customer_type = 'admin';
+            $conversation->con_type = 'Admin';
             $conversation->save();
 
             return response()->json([
@@ -250,7 +250,7 @@ class TicketController extends Controller
 
             $conversation = TicketConversation::findOrFail($request->id);
             $conversation->message = $validatedData['message'];
-            $conversation->customer_type = 'Customer';
+            $conversation->con_type = 'Customer';
             $conversation->save();
 
           
@@ -331,7 +331,7 @@ class TicketController extends Controller
 
             $conversation = new TicketConversation();
             $conversation->message = $request->message;
-            $conversation->customer_type = 'Customer';
+            $conversation->con_type = 'Customer';
             $conversation->ticket_id = $request->ticketId;
             $conversation->save();
         } catch (\Exception $e) {
